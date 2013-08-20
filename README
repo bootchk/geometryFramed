@@ -4,6 +4,9 @@ geometryFramed
 
 Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 
+This is the first distributed release, 0.1.0.  It is a work in progress.
+However, enough works (vectors, points, line segments, ellipse) that I plan to use it in another app,
+so, under the terms of the LGPL, I am obligated to convey it.
 
 
 About
