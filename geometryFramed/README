@@ -1,29 +1,30 @@
 
 geometryFramed
+==============
 
 Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 
 
 
 About
-=====
+-----
 
 geometryFramed is a pure Python, 2D geometry package that enforces frame (coordinate system) safety.
 
-It is intended for use in 2D GUI applications where many frames are used, e.g. using Qt.
+It is intended for use in 2D GUI applications where many frames are used.
+For example, the world, scene, and local coordinate systems in the Qt framework,
+when the application implements low-level GUI widgets.
 For such a use, frame safety provides ease of programming.
 The package raises an exception when a programmer improperly mixes geometrical objects from different frames.
-For such a use, handling of degeneracy is also important:
-geometrical objects come from arbitrary user input events, and may be degenerate.
 
 The package is also intended to be robust.
 It uses assertions liberally, as pre and post conditions, and to provide frame safety.
-It has a complete test suite, including high-level, axiomatic tests.
+The test suite includes high-level, axiomatic tests.
 (However that is only partially implemented, but its moving in the right direction.)
 
 
-Copyright and Licensing
-=======================
+License
+-------
 
 This library is free software; you can redistribute it and/or modify it
 under the terms of the GNU Lesser General Public License as published by
@@ -40,8 +41,8 @@ along with this library; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 
-Foundations of this package
-===========================
+Acknowledgements
+----------------
 
 Derived from PyEuclid copyright 2006 Alex Holkner.
 
@@ -50,10 +51,18 @@ Based on algorithms documented by:
 - "Computational Geometry in C" by O'Rourke.
 
 
-Modified:
+Requirements
+------------
 
-- axiom/model changes
+Tested only with Python 2.7
+
+
+Modifications to PyEuclid
+--------------------
+
+- model changes
 -- Points are not Vectors
+-- Point subclasses Coordinate
 
 - coding 
 -- separated classes, one to a module
@@ -75,14 +84,14 @@ Modified:
 
 
 Goals
-=====
+-----
 
 The goals of this package are:
 
 - Readable and maintainable code
 - Frame safety: two operands must be in the same frame (coordinate system).
 - Type safety: a Point is not interpreted as a Vector.
-- Robustness: provided tests form a complete set over all edge cases
+- Robustness: provided tests form a complete set over all edge cases and floating point problems
 - Large geometrical objects: SegmentStrings (e.g. Rectangle and PolyCurve) TODO
 - A set of basic geometry operations: connect(), intersect(), distance(), nearestPoint()
 - Finite, computational geometry: infinite lines, rays are not exposed
@@ -99,21 +108,18 @@ Frame Safety
 
 This package is designed for applications where multiple frames are used,
 for example in GUI apps having world, view, and local frames (coordinate systems.)
+See wiki about free and bound vectors.  Most geometry packages assume one frame.
 
 The motivation is: it is easier to program with explicit frames,
 than to use them implicitly, that is to keep in your head the proofs that you are not mixing frames.
 
-Every object may optionally be created having a frame.
+Every object may optionally be created having a frame (defaults to 'NoneFrame'.)
 The frame is simply an object that identifies the frame, and compares for equality to other frames.
-Typically, it is a string name of a frame.
+Typically, it is a string name of a frame.  (There is no Frame class.)
 
-Most methods having more than one parameter require all parameters to be in the same frame.
+Many methods having more than one parameter require all parameters to be in the same frame.
 
 Even Scalars have a frame.
-
-The frame defaults to 'NoneFrame'.
-
-See wiki about free and bound vectors.
 
 
 Type Safety and Polymorphism
@@ -145,7 +151,7 @@ All internal arithmetic is in floating point.
 
 
 TODO
-====
+----
 
 These are suggestions for improvements:
 
