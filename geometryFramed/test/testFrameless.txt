@@ -1,0 +1,101 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testFrameless.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from point import Point2
+ >>> from vector import Vector2
+ >>> from ellipse import Ellipse
+ >>> from lineSegment import LineSegment2
+ >>> from scalar import Dimension
+
+
+Frameless
+---------
+
+The frame argument is optional (a keyword argument.)
+
+Using default frames does NOT disable frame checking.
+Checking of frames can be disabled by disabling assertions.
+
+
+Default frame is 'NoneFrame'
+----------------------------
+
+You can create geometrical objects with a default frame.
+
+>>> pa = Point2(1, 1)
+>>> pb = Point2(3, 5)
+
+
+The default frame is 'NoneFrame'
+
+>>> pa.frame
+'NoneFrame'
+
+>>> aSegment = LineSegment2(pa, pb)
+>>> aSegment
+LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(3.00, 5.00, NoneFrame))
+
+
+You can create vectors with a default frame.
+
+>>> va = Vector2(3, 5)
+>>> va
+Vector2(3.00, 5.00, NoneFrame)
+
+
+You can create scalars with a default frame.
+
+>>> Dimension(1.01)
+Dimension(1.01, 'NoneFrame')
+
+
+None is not 'NoneFrame'
+-----------------------
+
+
+An exception is raised if you create with frame=None
+
+>>> pa = Point2(1, 1, None)
+Traceback (most recent call last):
+...
+  assert frame is not None
+AssertionError
+
+>>> Dimension(1.01, frame=None)
+Traceback (most recent call last):
+...
+  assert frame is not None
+AssertionError
+
+
+
+Geometrical
+-----------
+
+Frameless geometrical objects behave.
+
+>>> pa.connect(pb)
+LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(3.00, 5.00, NoneFrame))
+
+>>> aSegment.connect(pa)
+LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(1.00, 1.00, NoneFrame))
+
+>>> aSegment.intersect(pb)
+Point2(3.00, 5.00, NoneFrame)
+
+>>> aSegment.length
+Dimension(4.472135955, 'NoneFrame')
+
+

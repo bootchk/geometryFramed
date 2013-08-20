@@ -1,0 +1,319 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testVector.txt")
+
+You might need to reload after a fix.
+
+
+>>> from vector import Vector2
+>>> from point import Point2
+
+
+Vector
+------
+
+Two mutable vector types are available: **Vector2** and **Vector3**,
+for 2D and 3D vectors, respectively.  Vectors are assumed to hold
+floats, but most operations will also work if you use ints or longs
+instead.  Construct a vector in the obvious way::
+
+    >>> Vector2(1.5, 2.0, 'A')
+    Vector2(1.50, 2.00, A)
+
+
+A vector is not a point.
+
+    >>> va = Vector2(1.5, 2.0, 'A')
+    >>> isinstance(va, Point2)
+    False
+    
+    
+A point is not a vector.
+	
+	>>> pa = Point2(1, 2, 'A')
+	>>> pa
+	Point2(1.00, 2.00, A)
+	
+    >>> isinstance(pa, Vector2)
+    False
+    
+A vector can be converted to a point.
+The "displacement" of the vector becomes the "location" of the point.
+
+>>> va.asPoint2()
+Point2(1.50, 2.00, A)
+
+
+
+Vector methods
+--------------
+
+Vectors have a length and an angle but not a location.
+
+abs() is the length operator (infix notation, built-in function) returning a Scalar
+
+	>>> abs(va)
+	Dimension(2.5, 'A')
+	
+magnitude() method is an alias for abs() 
+
+	>>> abs(va) == va.magnitude()
+	True
+	
+The built-in function len() is NOT a vector operation, but the int length of a vector's representation as a sequence.
+
+	>>> len(va)
+	2
+	
+Magnitude of a vector is a Scalar.
+
+	>>> va.magnitude()
+	Dimension(2.5, 'A')
+
+The coordinate representation of a vector (x,y) is accessible as an attribute (property.)
+
+	>>> va.x
+	1.5
+
+
+Null vector
+-----------
+
+Subtracting two points yields a null vector
+
+>>> zeroVector = pa - pa
+>>> zeroVector
+Vector2(0.00, 0.00, A)
+
+
+You can create a null vector.
+
+>>> nullVector = Vector2(0.00, 0.00, 'A')
+>>> nullVector == zeroVector
+True
+
+
+All nullVectors are equal.
+(E.g. a null vector whose x == -0 is equal to one whose x == 0)
+
+>>> nullVector = Vector2(0.00, 0.00, 'A')
+>>> nullVector2 = Vector2(-0.00, 0.00, 'A')
+>>> nullVector2 == zeroVector
+True
+
+
+The magnitude of the zero vector is a Dimension.
+>>> abs(zeroVector)
+Dimension(0.0, 'A')
+
+The value of the Dimension of the magnitude of the zero vector is 0.
+>>> abs(zeroVector).value == 0
+True
+
+
+The direction of the zero vector is not defined.
+
+>>> zeroVector.angle(va)
+Traceback (most recent call last):
+...
+AssertionError
+
+
+The angle of any vector to the zero vector is not defined.
+Wiki: 'The zero vector is both parallel and perpendicular to every vector.'
+(The angle would need to be both 0 and 90 degrees !!!)
+
+>>> va.angle(zeroVector)
+Traceback (most recent call last):
+...
+AssertionError
+
+
+The angle of the zero vector to itself is not defined.
+
+>>> zeroVector.angle(zeroVector)
+Traceback (most recent call last):
+...
+AssertionError
+
+
+The zero vector as a boolean value returns False.
+
+>>> if not zeroVector: print True
+True
+
+
+The perp of the zero vector is defined but is a zero vector.
+
+>>> zeroVector.perp() == zeroVector
+True
+
+
+The dot product of the zero vector to any other vector is zero.
+The zeroVector is orthogonal to any other vector...
+
+>>> zeroVector.dot(va)
+Dimension(0.0, 'A')
+
+...including itself.
+
+>>> zeroVector.dot(zeroVector)
+Dimension(0, 'A')
+
+
+
+
+
+
+perp
+----
+
+The perp is one of two vectors related to a vector (the one requiring a left turn.)
+The condition of being at right angles is known as orthogonal, normal, or perpendicular,
+but there are two such vectors for any given vector.
+Perp is a name for the one that requires a left turn to reach.
+
+
+	>>> vb = Vector2(1.5, 2.0, 'B')
+	
+	
+	>>> vb.perp()
+	Vector2(-2.00, 1.50, B)
+	
+	
+The angle of a perp to related is half a radian (one half pi, or 90 degrees).
+
+	>>> vb.angle(vb.perp())
+	1.5707963267948966
+	
+	
+The perp of the negative of a perp (the antiperp) is the original.
+
+	>>> (-vb.perp()).perp() == vb
+	True
+
+
+Three successive calls to perp() yield the original.
+
+>>> vb.perp().perp().perp().perp() == vb
+True
+
+
+The perp is the same magnitude as the original.
+
+>>> abs(vb.perp()) == abs(vb)
+True
+
+
+
+angle
+-----
+
+>>> verticalVector = Vector2(0, -1, 'A')
+>>> unitXAxisVector = Vector2(1, 0, 'A')
+
+
+Angle BETWEEN vertical and horizontal is pi/2 radians.
+
+>>> verticalVector.angle(unitXAxisVector)
+1.5707963267948966
+
+
+Angle in the opposite order of operands (BETWEEN horizontal and vertical) is the same.
+
+>>> verticalVector.angle(unitXAxisVector) == unitXAxisVector.angle(verticalVector)
+True
+
+
+AngleTo another vector is signed.
+AngleTo from vertical to horizontal is pi/2 radians.
+AngleTo from vector to vector requiring right turn is positive.
+
+>>> verticalVector.angleTo(unitXAxisVector)
+1.5707963267948966
+
+Angle from vector to vector requiring left turn is negative.
+
+>>> unitXAxisVector.angleTo(verticalVector)
+-1.5707963267948966
+
+
+
+Point with vector arithmetic
+----------------------------
+
+Points displaced by vectors are points.
+
+Vectors added to points displace the point, yielding a point.
+
+	>>> vb = Vector2(1.5, 2.0, 'B')
+	>>> pb = Point2(1.5, 2.0, 'B')
+	>>> pb + vb
+	Point2(3.00, 4.00, B)
+
+Vector to point addition is commutative:
+	>>> vb + pb == pb + vb
+	True
+
+Points and vectors in different frames do NOT operate: add, subtract.
+
+>>> pa + vb
+Traceback (most recent call last):
+...
+AssertionError: Mismatched frames: A, B
+
+>>> vb + pa
+Traceback (most recent call last):
+...
+AssertionError: Mismatched frames: B, A
+
+>>> pa - vb
+Traceback (most recent call last):
+...
+AssertionError: Mismatched frames: A, B
+
+>>> vb - pa
+Traceback (most recent call last):
+...
+AssertionError: Mismatched frames: B, A
+
+
+-----------------
+Vector arithmetic
+-----------------
+    
+Vectors in different frames do NOT operate: add, sub, dot.
+
+>>> va + vb
+Traceback (most recent call last):
+...
+AssertionError: Mismatched frames: A, B
+
+>>> va - vb
+Traceback (most recent call last):
+...
+AssertionError: Mismatched frames: A, B
+
+>>> va.dot(vb)
+Traceback (most recent call last):
+...
+AssertionError: Mismatched frames: A, B
+
+
+
+
+
+Vector addition yields vector
+
+TODO
+
+
+
+

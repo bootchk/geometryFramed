@@ -1,0 +1,166 @@
+
+geometryFramed
+
+Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
+
+
+
+About
+=====
+
+geometryFramed is a pure Python, 2D geometry package that enforces frame (coordinate system) safety.
+
+It is intended for use in 2D GUI applications where many frames are used, e.g. using Qt.
+For such a use, frame safety provides ease of programming.
+The package raises an exception when a programmer improperly mixes geometrical objects from different frames.
+For such a use, handling of degeneracy is also important:
+geometrical objects come from arbitrary user input events, and may be degenerate.
+
+The package is also intended to be robust.
+It uses assertions liberally, as pre and post conditions, and to provide frame safety.
+It has a complete test suite, including high-level, axiomatic tests.
+(However that is only partially implemented, but its moving in the right direction.)
+
+
+Copyright and Licensing
+=======================
+
+This library is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 3.0 of the License, or (at
+your option) any later version.
+.
+This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+License for more details.
+.
+You should have received a copy of the GNU Lesser General Public License
+along with this library; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
+
+
+Foundations of this package
+===========================
+
+Derived from PyEuclid copyright 2006 Alex Holkner.
+
+Based on algorithms documented by:
+- Paul Bourke, http://astronomy.swin.edu.au/~pbourke
+- "Computational Geometry in C" by O'Rourke.
+
+
+Modified:
+
+- axiom/model changes
+-- Points are not Vectors
+
+- coding 
+-- separated classes, one to a module
+-- eliminated support for old-style classes (eliminated metaclass stuff to support slots.)
+-- eliminated support for swizzling
+-- added docstrings and tests
+
+- added algorithms from "Computational Geometry in C" by O'Rourke.
+- eliminated 3D geometry
+- eliminated transforms (should be separate package, often provided by a GUI framework.)
+- typeConvert module converts to types from the Qt framework, and applies transforms
+
+- added Ellipse and modified Circle (an Ellipse is more general.)
+
+- improved handling of degeneracy: 
+-- self to self geometry
+-- null vector
+-- connect() always return a lineSegment, even if zero length
+
+
+Goals
+=====
+
+The goals of this package are:
+
+- Readable and maintainable code
+- Frame safety: two operands must be in the same frame (coordinate system).
+- Type safety: a Point is not interpreted as a Vector.
+- Robustness: provided tests form a complete set over all edge cases
+- Large geometrical objects: SegmentStrings (e.g. Rectangle and PolyCurve) TODO
+- A set of basic geometry operations: connect(), intersect(), distance(), nearestPoint()
+- Finite, computational geometry: infinite lines, rays are not exposed
+
+
+These are NOT goals:
+
+- abstracting over dimension: this is for 2D geometry.
+- performance: secondary to correctness
+
+
+Frame Safety
+============
+
+This package is designed for applications where multiple frames are used,
+for example in GUI apps having world, view, and local frames (coordinate systems.)
+
+The motivation is: it is easier to program with explicit frames,
+than to use them implicitly, that is to keep in your head the proofs that you are not mixing frames.
+
+Every object may optionally be created having a frame.
+The frame is simply an object that identifies the frame, and compares for equality to other frames.
+Typically, it is a string name of a frame.
+
+Most methods having more than one parameter require all parameters to be in the same frame.
+
+Even Scalars have a frame.
+
+The frame defaults to 'NoneFrame'.
+
+See wiki about free and bound vectors.
+
+
+Type Safety and Polymorphism
+============================
+
+Where a Vector is required, a Point is not allowed.
+The negation and addition methods are NOT defined for Points but defined for Vectors.
+Subtraction is defined for Points, yielding a Vector.
+(AFAIK, this is the more rigorous, classical math.)
+
+Methods exist for type conversion, e.g. Point.asVector().
+
+Vectors and Coordinates do not inherit Geometrical.
+You COULD make vectors Geometrical, but it is not useful:
+All vectors connect and intersect at the frame's origin.
+Also, mixing vectors and geometrical objects is suspect.
+
+Points are Coordinates.
+Points extend Coordinates with arithmetic operations and Geometrical.
+
+Methods of the Geometrical class are polymorphic:
+taking parameters that are instances of other subclasses of Geometrical.
+
+
+Arithmetic
+==========
+
+All internal arithmetic is in floating point.
+
+
+TODO
+====
+
+These are suggestions for improvements:
+
+more tests. Capture tests from the planar project.
+
+Testing floating point boundary conditions.
+Safe checking for floating point equality, e.g. for dot() == 0
+
+SegmentString class (composite) a geometrical object (connect, intersect, distance)
+nearest() part of GeometricalABC, returning a Segment from a SegmentString
+
+Segment class with subclasses LineSegment2 and CurveSegment2
+
+LineSegment not directional(?)  Clarify and test use of _swap()
+
+Ellipse defined as a scaled circle is not as defined by most GUI frameworks.
+
+

@@ -1,0 +1,93 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testCoordinate.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from coordinate import Coordinate2
+ >>> from point import Point2
+
+
+
+----------
+Coordinate
+----------
+
+Coordinates are internal representations.
+Generally not used by the public.
+
+Create test objects:
+>>> ca = Coordinate2(1, 2, 'A')
+>>> cb = Coordinate2(1, 2, 'B')
+>>> ca
+Coordinate2(1.00, 2.00, A)
+
+
+Comparison
+----------
+
+Coordinates compare
+>>> ca == ca
+True
+
+Coordinates in different frames are not equal
+>>> ca == cb
+False
+
+Coordinates can be compared to tuples, and other sequences
+
+>>> ca == (1,2)
+True
+
+
+Copy
+----
+
+A copy of a Coordinate is equal
+>>> cc = ca.copy()
+>>> cc == ca
+True
+
+A copy is equivalent
+>> cc is ca
+True
+
+A copy is not the same instance
+>>id(cc) == id(ca)
+False
+
+
+
+Not methods
+-----------
+
+Negation is not defined.
+
+>>> -ca
+Traceback (most recent call last):
+...
+TypeError: bad operand type for unary -: 'Coordinate2'
+
+
+Coordinates are not geometrical: do not connect
+
+>>> aPointInA = Point2(2.0, 2.0, 'A')
+>>> aPointInA
+Point2(2.00, 2.00, A)
+>>> ca.connect(aPointInA)
+Traceback (most recent call last):
+...
+AttributeError: 'Coordinate2' object has no attribute 'connect'
+
+
+
+

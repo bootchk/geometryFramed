@@ -1,0 +1,54 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testInheritance.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from vector import Vector2
+ >>> from coordinate import Coordinate2
+
+ >>> from point import Point2
+ >>> from lineSegment import LineSegment2
+ >>> from circle import Circle
+ >>> from ellipse import Ellipse
+
+
+Inheritance
+-----------
+
+All classes are new style with simple MRO.
+
+
+Nongeometrical
+--------------
+
+>>> Vector2.__mro__
+(<class 'vector.Vector2'>, <class 'coordinate.Coordinate2'>, <type 'object'>)
+
+>>> Coordinate2.__mro__
+(<class 'coordinate.Coordinate2'>, <type 'object'>)
+
+
+Geometrical
+-----------
+
+>>> Point2.__mro__
+(<class 'point.Point2'>, <class 'geometricalABC.Geometrical2D'>, <class 'geometricalABC.Geometrical'>, <class 'coordinate.Coordinate2'>, <type 'object'>)
+
+>>> LineSegment2.__mro__
+(<class 'lineSegment.LineSegment2'>, <class 'line.Line2'>, <class 'geometricalABC.Geometrical2D'>, <class 'geometricalABC.Geometrical'>, <type 'object'>)
+
+>>> Circle.__mro__
+(<class 'circle.Circle'>, <class 'geometricalABC.Geometrical2D'>, <class 'geometricalABC.Geometrical'>, <type 'object'>)
+
+>>> Ellipse.__mro__
+(<class 'ellipse.Ellipse'>, <class 'geometricalABC.Geometrical2D'>, <class 'geometricalABC.Geometrical'>, <type 'object'>)

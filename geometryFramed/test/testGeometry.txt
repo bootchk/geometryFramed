@@ -1,0 +1,218 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testGeometry.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from point import Point2
+ >>> from vector import Vector2
+ >>> from lineSegment import LineSegment2
+ >>> from ellipse import Ellipse
+
+
+
+Geometry
+--------
+
+Geometrical methods: intersect, connect, distance, nearest.
+Test these methods between all combinations of two geometrical objects.
+Also test nested combinations of of these methods where the result
+of one method is fed to another method.
+(These tests are 'axioms' of the package: things you can assume,
+but in classical math, many would be called theorems provable
+from a smaller set of classical axioms.)
+
+
+>>> pa = Point2(1.5, 2.0, 'A')
+>>> pb = Point2(1, 1, 'A')
+
+
+
+Point to point geometry
+-----------------------
+
+Geometry is defined for point to point
+
+>>> pa.connect(pb)
+LineSegment2(Point2(1.50, 2.00, A), Point2(1.00, 1.00, A))
+
+
+Different points do not intersect
+
+>>> pa.intersect(pb) is None
+True
+
+
+Distance  between points yields a scalar Dimension in the same frame
+>>> pa.distance(pb)
+Dimension(1.11803398875, 'A')
+
+Nearest point is the other point.
+
+>>> pa.nearestPoint(pb) == pb
+True
+
+
+Geometry from a point to itself
+-------------------------------
+
+A point connects to itself.
+
+Distance from a point to itself is zero.
+
+>>> pa.distance(pa)		
+Dimension(0.0, 'A')
+
+
+A point intersects itself.
+>>> pa.intersect(pa) == pa
+True
+
+
+
+
+Point/LineSegment geometry
+--------------------------
+
+>>> abSegment = LineSegment2(pa, pb)
+>>> pc = Point2(4, 4, 'A')
+
+
+A line segment connects to a point.
+
+>>> abSegment.connect(pc)
+LineSegment2(Point2(1.50, 2.00, A), Point2(4.00, 4.00, A))
+
+... and vice versa
+
+>>> pa.connect(abSegment)
+LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A))
+
+
+A line segment connects to a point on the line segment by a segment.
+
+>>> abSegment.connect(pa)
+LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A))
+
+... and the connecting segment has zero magnitude
+
+>>> abs(abSegment.connect(pa)).value
+0.0
+
+
+Line segment intersect point.
+
+
+Intersection of a line segment and point that defines a line segment is the point.
+
+>>> abSegment.intersect(pa) == pa
+True
+
+
+
+LineSegment to LineSegment geometry
+--------------------------------
+
+A line segment intersects itself yielding a copy of the line segment itself.
+FIXME
+
+>>> abSegment.intersect(abSegment) == abSegment
+True
+
+
+Parallel segments do not intersect (returns None.)
+>>> paOffset = pa + Vector2(2, 2, 'A')
+>>> pbOffset = pb + Vector2(2, 2, 'A')
+>>> paOffsetpbOffsetSegment = LineSegment2(paOffset, pbOffset)
+>>> abSegment.intersect(paOffsetpbOffsetSegment) is None
+True
+
+
+
+Distance is positive
+--------------------
+
+Distance from a point to a line is positive, even for points on different sides of a line.
+
+TODO
+
+
+Vector geometry
+---------------
+
+Geometry (intersect, connect, distance) is NOT defined for vectors.
+
+>>> vb = Vector2(1.5, 2.0, 'B')
+>>> pc = Point2(1.5, 2.0, 'B')
+	
+>>> vb.connect(pc)
+Traceback (most recent call last):
+...
+AttributeError: 'Vector2' object has no attribute 'connect'
+	
+>>> vb.intersect(pc)
+Traceback (most recent call last):
+...
+AttributeError: 'Vector2' object has no attribute 'intersect'
+	
+>>> vb.distance(pc)
+Traceback (most recent call last):
+...
+AttributeError: 'Vector2' object has no attribute 'distance'
+
+
+
+Intersection
+------------
+
+The intersection of a first segment and the connecting segment 
+that connects a point to the first segment...
+
+>>> firstSegment = LineSegment2(pa, pb)
+>>> aPoint = Point2(4, 4, 'A')
+>>> connectingSegment = aPoint.connect(firstSegment)
+>>> intersection = firstSegment.intersect(connectingSegment)
+>>> intersection
+Point2(1.50, 2.00, A)
+
+...is a point on (intersects) the connecting segment (an end point),
+
+>>> intersection.intersect(connectingSegment)
+Point2(1.50, 2.00, A)
+
+...and it is the first point of the connecting segment
+
+>>> intersection == pa
+True
+
+... and it is on the first segment (not necessarily an end point.)
+>>> intersection.intersect(firstSegment)
+Point2(1.50, 2.00, A)
+
+
+
+The intersection of a first point and the connecting segment that connects said point to a first segment 
+is said first point. (This fails in PyEuclid.)
+(As a set, a connecting segment includes the point which the connecting segment connects to other.)
+
+>>> intersection = pa.intersect(pa.connect(firstSegment))
+>>> intersection == pa
+True
+
+
+
+Certain intersections are improper???  TODO more test cases
+
+
+
+TODO test all geometry combinations
+

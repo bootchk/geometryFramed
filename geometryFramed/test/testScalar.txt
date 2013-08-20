@@ -1,0 +1,62 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testScalar.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from scalar import Dimension
+
+
+
+Scalar
+------
+
+Scalars have a frame
+
+>>> sa = Dimension(1, "A")
+>>> sa
+Dimension(1, 'A')
+
+
+Scalars are internally int or float
+
+>>> sb = Dimension(1.0, "A")
+>>> sb
+Dimension(1.0, 'A')
+
+
+Scalars cannot be compared to ints.
+>>> sa == 1
+Traceback (most recent call last):
+...
+AssertionError: <type 'int'>
+
+
+Scalars cannot be compared to floats.
+>>> sb == 1.0
+Traceback (most recent call last):
+...
+AssertionError: <type 'float'>
+
+
+Scalars compare, with the usual cautions about comparing floats to ints
+>>> sa == sb
+True
+
+
+Comparing scalars in different frames raises an exception
+>>> sc = Dimension(1.0, "C")
+>>> sa == sc
+Traceback (most recent call last):
+...
+AssertionError: Frames differ
+

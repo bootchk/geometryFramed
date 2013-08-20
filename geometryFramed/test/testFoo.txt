@@ -1,0 +1,30 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testEllipse.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from point import Point2
+ >>> from vector import Vector2
+ >>> from ellipse import Ellipse
+
+
+Foo
+---
+
+Create test objects:
+
+
+Geometrical
+-----------
+
+

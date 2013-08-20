@@ -1,0 +1,134 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testPoint.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from point import Point2
+ >>> from vector import Vector2
+ >>> from ellipse import Ellipse
+
+
+
+Point
+-----
+
+>>> pa = Point2(1.5, 2, 'A')
+>>> pa
+Point2(1.50, 2.00, A)
+
+
+Points have a location but NOT a direction or length.
+
+Location is x and y properties:
+
+>>> pa.x
+1.5
+
+
+Points have no magnitude (length) method.
+(The method does not exist, it is not that the 'length' is zero.)
+
+>>> abs(pa)
+Traceback (most recent call last):
+...
+TypeError: bad operand type for abs(): 'Point2'
+
+
+Points have no direction (angle to vectors).
+
+>>> pa.angle(va)
+Traceback (most recent call last):
+...
+AttributeError: 'Point2' object has no attribute 'angle'
+
+
+
+Point arithmetic
+----------------
+
+In group theory, point arithmetic is ????, where subtraction but not addition is defined.
+
+The difference of points (subtraction) is a vector.
+
+>>> pb = Point2(1, 1, 'A')
+>>> pa - pb
+Vector2(0.50, 1.00, A)
+
+
+The difference of the same point is a vector.
+The zero of point subtraction is a vector.
+
+>>> pa - pa
+Vector2(0.00, 0.00, A)
+
+
+Points do NOT add.
+
+>>> pa + pb
+Traceback (most recent call last):
+...
+NotImplementedError: Point addition is not defined and meaningless.
+
+
+
+Geometry
+--------
+
+Points connect to themselves.
+
+>>> pa.connect(pa)
+LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A))
+
+
+The distance from a point to itself is a Dimension with value 0.
+>>> pa.distance(pa)
+Dimension(0.0, 'A')
+
+
+nearestPoint() method reduces the connection of a point to another object
+to the point of intersection of the connection.
+>>> abSegment = pa.connect(pb)
+>>> pa.nearestPoint(abSegment)
+Point2(1.50, 2.00, A)
+
+
+Two points intersect if they are the same point.
+
+>>> pa.intersect(pa)
+Point2(1.50, 2.00, A)
+ 
+Two different points do not intersect.
+
+>>> pa.intersect(pb) is None
+True
+
+(TODO other geometrical objects intersect(other) method does not allow other a Point2.)
+
+
+Truthiness of point c intersection with LineSegment defined by points a, b 
+is determined by the isBetween function
+
+>>> from base import isBetween
+>>> isBetween( pa, pb, pa)
+True
+>>> isBetween( pa, pb, pb)
+True
+
+
+Stretch
+-------
+
+A point can be stretched between frames by a vector
+that defines the difference in scale between frames.
+
+TODO

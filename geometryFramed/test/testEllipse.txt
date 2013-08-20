@@ -1,0 +1,193 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testEllipse.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from point import Point2
+ >>> from vector import Vector2
+ >>> from ellipse import Ellipse
+ >>> from lineSegment import LineSegment2
+
+
+Test objects
+------------
+
+>>> centerPoint = Point2(2.0, 2.0, 'A')
+>>> centerPoint
+Point2(2.00, 2.00, A)
+
+>>> pb = Point2(4, 2.0, 'A')
+>>> pb
+Point2(4.00, 2.00, A)
+
+>>> anEllipseInA = Ellipse(center = centerPoint, radiusX=1, radiusY=2)
+>>> anEllipseInA
+Ellipse(center=2.00, 2.00, radiusX=1.00, radiusY=2.00, frame=A)
+
+
+Methods
+-------
+
+Radii of an ellipse are properties
+
+TODO
+
+Perp is defined.
+
+>>> perp = anEllipseInA.perp(pb)
+>>> perp
+Vector2(-1.00, 0.00, A)
+
+
+Tangent is defined.
+
+>>> tangent = anEllipseInA.tangent(pb)
+>>> tangent
+Vector2(0.00, 1.00, A)
+
+
+Perp is orthogonal to the tangent
+TODO orthogonal() method for vector
+
+# TODO >>> perp.perp() == tangent
+# >>> perp.angleTo(tangent)
+>>> perp.dot(tangent).value == 0
+True
+
+
+Enclosure
+---------
+
+A point outside an ellipse is not enclosed.
+The center of an ellipse is enclosed.
+A point on the edge of an ellipse is enclosed.
+A line segment whose points are enclosed is also enclosed.
+TODO
+
+
+Circle for ellipse
+------------------
+
+The circle for an ellipse is the ellipse unstretched into a circle
+at the origin of a TEMP frame.
+
+>>> circleForEllipse = anEllipseInA.circleFor()
+>>> circleForEllipse
+Circle(center=0.00, 0.00, radius=1.00, frame=TEMP)
+
+
+An ellipse knows the vector that will scale the ellipse to circle.
+The vector is in a TEMP frame.
+(The circle must be translated to the origin of the TEMP frame before scaling.)
+
+>>> anEllipseInA.getScaleVectorToCircle()
+Vector2(1.00, 0.50, TEMP)
+
+
+Radius of circle for ellipse is min radii of ellipse.
+
+>>> circleForEllipse.radius == min(anEllipseInA.radiusX, anEllipseInA.radiusY)
+True
+
+
+Geometry
+--------
+
+!!! Algorithms are approximate.
+Exact geometry algorithms for ellipse are hard.
+These algorithms suffer worse approximations as an ellipse is flattened severely.
+
+Connect is defined but approximate.
+
+Point on radial through minor axis connects
+
+>>> pb.connect(anEllipseInA)
+LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A))
+
+
+Point on ellipse connects
+>>> pc = Point2(3, 2.0, 'A')
+>>> pc.connect(anEllipseInA)
+LineSegment2(Point2(3.00, 2.00, A), Point2(3.00, 2.00, A))
+
+Line segment connects
+
+
+Approximate:
+the intersection of a connecting segment to an ellipse
+and the ellipse
+is a point that is not necessarily exactly ON the ellipse.
+(ellipse.on() is not defined yet
+The classical model for ellipse gives an exact definition for ON.
+But we are using a different model.)
+TODO
+
+Connecting segment to a point is not necessarily orthogonal
+to the tangent at the point of intersection of the connecting segment to the ellipse.
+TODO
+
+Line segment parallel to ellipse connects
+>>> pd = Point2(4, 4, 'A')
+>>> pe = Point2(4, -4, 'A')
+>>> deSegment = LineSegment2(pd, pe)
+>>> anEllipseInA.connect(deSegment)
+LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A))
+
+... and vice versa
+>>> deSegment.connect(anEllipseInA)
+LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A))
+
+
+
+Line segment parallel to ellipse does not intersect.
+# FIXME NotImplemented
+>>> anEllipseInA.intersect(deSegment)
+Traceback (most recent call last):
+...
+NotImplementedError
+
+
+TODO more connection tests
+
+
+Frame safety
+------------
+
+An ellipse is in the frame of its defining center point.
+
+TODO
+
+
+
+
+>>> translation = Vector2(2, 2, "TEMP")
+
+>>> scale = Vector2(1, 2, "TEMP")
+
+
+Translate point
+
+>>> centerPoint.translate(translation)
+Point2(4.00, 4.00, TEMP)
+
+
+
+
+
+
+
+
+
+
+
+
