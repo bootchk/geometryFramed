@@ -1,4 +1,7 @@
 '''
+Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
+
+Licensed under the LGPLv3
 '''
 
 from scalar import Dimension

@@ -1,4 +1,9 @@
 '''
+Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
+
+Licensed under the LGPLv3
+
+
 From "Computational Geometry in C" by O'Rourke.
 Note there the discussion of correctness and special cases for the alternative  (slope algorithm.)
 

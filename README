@@ -14,7 +14,7 @@ geometryFramed is a pure Python, 2D geometry package that enforces frame (coordi
 It is intended for use in 2D GUI applications where many frames are used.
 For example, the world, scene, and local coordinate systems in the Qt framework,
 when the application implements low-level GUI widgets.
-For such a use, frame safety provides ease of programming.
+For such use, frame safety provides ease of programming.
 The package raises an exception when a programmer improperly mixes geometrical objects from different frames.
 
 The package is also intended to be robust.

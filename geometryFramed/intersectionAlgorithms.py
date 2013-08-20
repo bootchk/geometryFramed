@@ -1,4 +1,9 @@
 '''
+Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
+
+Licensed under the LGPLv3
+
+
 Alternative intersection algorithms for line segments.
 Note that the algorithms in algorithms.py are defective: 
 they are not able to return a line segment for overlapping, parallel segments,

@@ -1,4 +1,7 @@
 '''
+Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
+
+Licensed under the LGPLv3
 '''
 
 import math
@@ -7,6 +10,7 @@ import operator
 import coordinate
 import point
 from scalar import Dimension
+
 
 class Vector2(coordinate.Coordinate2):
     '''

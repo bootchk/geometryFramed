@@ -35,8 +35,8 @@ Constructors
 
 Two points can define a line segment.
 
->>> aSegment = LineSegment2(pa, pb)
->>> aSegment
+>>> abSegment = LineSegment2(pa, pb)
+>>> abSegment
 LineSegment2(Point2(1.00, 2.00, A), Point2(1.50, 2.00, A))
 
 
@@ -82,6 +82,9 @@ TypeError: (Vector2(1.50, 2.00, A), Vector2(1.50, 2.00, A)) <class 'vector.Vecto
 Null line segment
 -----------------
 
+Also called an improper line segment.
+A line segment of zero length, located at any point.
+
 The same point used twice defines a zero-length line segment.
 
 >>> nullSegment = LineSegment2(pa, pa)
@@ -125,6 +128,18 @@ perp of nullSegment is a zero length vector
 Vector2(-0.00, 0.00, A)
 
 
+Improper segment and point connect.
+
+>>> nullSegment.connect(pa)
+LineSegment2(Point2(1.00, 2.00, A), Point2(1.00, 2.00, A))
+
+
+Improper segment and the point used to define it do intersect.
+
+>>> nullSegment.intersect(pa) == pa
+True
+
+
 
 
 Comparison
@@ -132,7 +147,7 @@ Comparison
 
 A segment is equal to itself.
 
->>> aSegment == aSegment
+>>> abSegment == abSegment
 True
 
 
@@ -140,7 +155,7 @@ A segment has a direction defined by the order of points used to create it.
 The reverse of a segment is not equal to the original.
 
 >>> reverseOfASegment = LineSegment2(pb, pa)
->>> aSegment == reverseOfASegment
+>>> abSegment == reverseOfASegment
 False
 
 
@@ -153,11 +168,16 @@ Points of
 First and second points of a line segment are properties.
 (regardless how it was constructed.)
 
->>> aSegment.p1
+>>> abSegment.p1
 Point2(1.00, 2.00, A)
 
->>> aSegment.p2
+>>> abSegment.p2
 Point2(1.50, 2.00, A)
+
+
+The points for a segment created from creation points equals the creation points.
+>>> abSegment.asPointPair() == (pa, pb)
+True
 
 
 Line segment methods
@@ -169,24 +189,24 @@ TODO
 A line segment has a magnitude defined by abs().
 It is a Dimension in the same frame.
 
->>> abs(aSegment)
+>>> abs(abSegment)
 Dimension(0.5, 'A')
 
 
 abs() is an alias for the length property
 
->>> aSegment.length == abs(aSegment)
+>>> abSegment.length == abs(abSegment)
 True
 
 
 A line segment has a perp, which is a Vector2.
->>> aSegment.perp()
+>>> abSegment.perp()
 Vector2(-0.00, 0.50, A)
 
 
 Line segments do NOT project onto vectors
 
->>> aSegment.project(va)
+>>> abSegment.project(va)
 Traceback (most recent call last):
 ...
 AttributeError: 'LineSegment2' object has no attribute 'project'
@@ -199,7 +219,7 @@ A line segment can be translated between frames
 by the vector that defines the difference in origin of the frames.
 The result is a line segment in the frame of the vector.
 
->>> aSegment.translate(vb)
+>>> abSegment.translate(vb)
 LineSegment2(Point2(2.50, 4.00, B), Point2(3.00, 4.00, B))
 
 
@@ -208,4 +228,16 @@ A line segment can be stretched between frames by a vector.
 TODO
 
 
+
+Edge cases
+----------
+
+Horizontal segment and point very near it connect and intersect.
+
+>>> cPoint = Point2(0,1, 'foo')
+>>> dPoint = Point2(1,1, 'foo')
+>>> bSegment = LineSegment2(cPoint, dPoint)
+>>> ePoint = Point2(0.8, 1.05, 'foo')
+>>> bSegment.connect(ePoint).intersect(bSegment)
+Point2(0.80, 1.00, foo)
 

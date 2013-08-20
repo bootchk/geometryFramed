@@ -14,8 +14,6 @@ import point
 import line
 import lineSegment
 from scalar import Dimension
-
-# TODO combine these files
 from intersectionAlgorithms import intersectLineSegmentsForPoints
 
 
@@ -58,7 +56,7 @@ def intersectPoint2Line2(A, B):
 def intersectPoint2Circle(A, B):
   raise NotImplementedError
 
-# TODO intersectPoint2Ellipse
+# No intersectPoint2Ellipse because it reimplement intersect() in terms of Circle.intersect()
 
 
 '''

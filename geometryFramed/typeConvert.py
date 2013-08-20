@@ -1,4 +1,9 @@
 '''
+Copyright 2013 Lloyd K. Konneker
+
+Licensed under the LGPLv3
+
+
 Type conversions from our types to Qt types.
 
 Note below the name of the parameter is name of a type (but lower case.)

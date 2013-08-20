@@ -1,36 +1,7 @@
 '''
+Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 
-Can create segment from two points.
->>> aPoint = Point2(0,0, 'foo')
->>> bPoint = Point2(0,1, 'foo')
->>> aSegment = LineSegment2(aPoint, bPoint)
->>> aSegment
-LineSegment2(Point2(0.00, 0.00, foo), Point2(0.00, 1.00, foo))
-
-The points for a segment created from creation points equals the creation points.
->>> aSegment.asPointPair() == (aPoint, bPoint)
-True
-
-Intersection and Connection
----------------------------
-
-A connecting segment (connecting a point to a first segment) intersects the first segment.
->>> cPoint = Point2(0.5, 0.5, 'foo')
->>> aSegment.connect(cPoint).intersect(aSegment)
-Point2(0.00, 0.50, foo)
-
-Horizontal segment and point very near it connect and intersect.
->>> cPoint = Point2(0,1, 'foo')
->>> dPoint = Point2(1,1, 'foo')
->>> bSegment = LineSegment2(cPoint, dPoint)
->>> ePoint = Point2(0.8, 1.05, 'foo')
->>> bSegment.connect(ePoint).intersect(bSegment)
-Point2(0.80, 1.00, foo)
-
-Improper segment and point intersect.
->>> improperSegment = LineSegment2(cPoint, cPoint)
->>> improperSegment.connect(dPoint)
-
+Licensed under the LGPLv3
 '''
 
 import line
