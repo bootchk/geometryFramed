@@ -3,7 +3,7 @@ Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 
 Licensed under the LGPLv3
 '''
-from PySide.QtGui import QPolygonF
+from PyQt4.QtGui import QPolygonF
 
 from point import Point2
 from lineSegment import LineSegment2
