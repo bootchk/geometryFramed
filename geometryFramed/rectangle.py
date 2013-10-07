@@ -3,11 +3,11 @@ Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 
 Licensed under the LGPLv3
 '''
-from PyQt4.QtGui import QPolygonF
+from PyQt5.QtGui import QPolygonF
 
-from point import Point2
-from lineSegment import LineSegment2
-from typeConvert import asPoint2, unitXAxis, unitYAxis
+from .point import Point2
+from .lineSegment import LineSegment2
+from .typeConvert import asPoint2, unitXAxis, unitYAxis
 
 
 class Rectangle(object):

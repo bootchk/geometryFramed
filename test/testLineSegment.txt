@@ -13,10 +13,10 @@ You might need to reload after a fix.
 
 
 
- >>> from point import Point2
- >>> from vector import Vector2
- >>> from lineSegment import LineSegment2
- >>> from scalar import Dimension
+ >>> from geometryFramed.point import Point2
+ >>> from geometryFramed.vector import Vector2
+ >>> from geometryFramed.lineSegment import LineSegment2
+ >>> from geometryFramed.scalar import Dimension
 
 
 
@@ -32,32 +32,39 @@ Constructors
 >>> va = Vector2(1.5, 2.0, 'A')
 >>> vb = Vector2(1.5, 2.0, 'B')
 
-
 Two points can define a line segment.
 
 >>> abSegment = LineSegment2(pa, pb)
 >>> abSegment
-LineSegment2(Point2(1.00, 2.00, A), Point2(1.50, 2.00, A))
+LineSegment2(Point2(1.00, 2.00, A), Point2(1.50, 2.00, A), 'A')
 
 
 A point and a vector can define a line segment.
 
 >>> LineSegment2(pa, va)
-LineSegment2(Point2(1.00, 2.00, A), Point2(2.50, 4.00, A))
+LineSegment2(Point2(1.00, 2.00, A), Point2(2.50, 4.00, A), 'A')
 
 
 A point, a vector, and a multiplier of type Dimension (in the same frame) can define a line segment.
 >>> three = Dimension(3, 'A')
 >>> LineSegment2(pa, va, three)
-LineSegment2(Point2(1.00, 2.00, A), Point2(2.80, 4.40, A))
+LineSegment2(Point2(1.00, 2.00, A), Point2(2.80, 4.40, A), 'A')
+
+
+First argument not a vector or point raises exception:
+
+>>> LineSegment2(1, va, three)
+Traceback (most recent call last):
+...
+AttributeError: 'int' object has no attribute 'frame'
 
 
 Too many arguments raises TypeError
 
->>> LineSegment2(1, 2, 3, 4)
+>>> LineSegment2(pa, va, three, 4)
 Traceback (most recent call last):
 ...
-TypeError: (1, 2, 3, 4)
+TypeError: (Point2(1.00, 2.00, A), Vector2(1.50, 2.00, A), Dimension(3, 'A'), 4)
 
 
 Args with frame mismatches raise an exception:
@@ -75,7 +82,7 @@ Two vectors cannot be used to define a LineSegment.
 >>> LineSegment2(va, va)
 Traceback (most recent call last):
 ...
-TypeError: (Vector2(1.50, 2.00, A), Vector2(1.50, 2.00, A)) <class 'vector.Vector2'> <class 'vector.Vector2'>
+TypeError: (Vector2(1.50, 2.00, A), Vector2(1.50, 2.00, A)) <class 'geometryFramed.vector.Vector2'> <class 'geometryFramed.vector.Vector2'>
 
 
 
@@ -107,7 +114,7 @@ False
 
 
 A null line segment evaluates to True.
->>> if nullSegment: print True
+>>> if nullSegment: True
 True
 
 >>> nullSegment is not None
@@ -131,7 +138,7 @@ Vector2(-0.00, 0.00, A)
 Improper segment and point connect.
 
 >>> nullSegment.connect(pa)
-LineSegment2(Point2(1.00, 2.00, A), Point2(1.00, 2.00, A))
+LineSegment2(Point2(1.00, 2.00, A), Point2(1.00, 2.00, A), 'A')
 
 
 Improper segment and the point used to define it do intersect.
@@ -220,7 +227,7 @@ by the vector that defines the difference in origin of the frames.
 The result is a line segment in the frame of the vector.
 
 >>> abSegment.translate(vb)
-LineSegment2(Point2(2.50, 4.00, B), Point2(3.00, 4.00, B))
+LineSegment2(Point2(2.50, 4.00, B), Point2(3.00, 4.00, B), 'B')
 
 
 A line segment can be stretched between frames by a vector.

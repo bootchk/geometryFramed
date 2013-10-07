@@ -5,12 +5,14 @@ Licensed under the LGPLv3
 '''
 
 
-from geometricalABC import Geometrical2D
+from .geometricalABC import Geometrical2D
 
-import point
-import vector
-import algorithms
-from scalar import Dimension
+from .point import Point2
+from .vector import Vector2
+from .scalar import Dimension
+
+import geometryFramed.algorithms
+
 
 
 class Line2(Geometrical2D):
@@ -40,7 +42,7 @@ class Line2(Geometrical2D):
             (self.p.x, self.p.y, self.v.x, self.v.y)
 
     p1 = property(lambda self: self.p)
-    p2 = property(lambda self: point.Point2(self.p.x + self.v.x, 
+    p2 = property(lambda self: Point2(self.p.x + self.v.x, 
                                       self.p.y + self.v.y,
                                       self.p.frame))
       
@@ -76,23 +78,23 @@ class Line2(Geometrical2D):
 
 
     def _intersect_point2(self, other):
-        return algorithms.intersectPoint2Line2(other, self)
+        return geometryFramed.algorithms.intersectPoint2Line2(other, self)
       
     def _intersect_line2(self, other):
-        return algorithms.intersectLine2Line2(self, other)
+        return geometryFramed.algorithms.intersectLine2Line2(self, other)
 
     def _intersect_circle(self, other):
-        return algorithms.intersectLine2Circle(self, other)
+        return geometryFramed.algorithms.intersectLine2Circle(self, other)
 
 
     def _connect_point2(self, other):
-        return algorithms.connectPoint2Line2(other, self)
+        return geometryFramed.algorithms.connectPoint2Line2(other, self)
 
     def _connect_line2(self, other):
-        return algorithms.connectLine2Line2(other, self)
+        return geometryFramed.algorithms.connectLine2Line2(other, self)
 
     def _connect_circle(self, other):
-        return algorithms.connectCircleLine2(other, self)
+        return geometryFramed.algorithms.connectCircleLine2(other, self)
       
     
     def constructLinelike(self, *args):
@@ -109,8 +111,8 @@ class Line2(Geometrical2D):
     
       if len(args) == 3:
           " 3rd arg is a multiplier. ???"
-          assert isinstance(args[0], point.Point2)
-          assert isinstance(args[1], vector.Vector2)
+          assert isinstance(args[0], Point2)
+          assert isinstance(args[1], Vector2)
           ## assert type(args[2]) == float, str(type(args[2]))
           assert isinstance( args[2], Dimension)
           assert args[0].frame == args[1].frame
@@ -119,23 +121,26 @@ class Line2(Geometrical2D):
           self.v = args[1] * args[2] / abs(args[1])
       elif len(args) == 2:
           assert args[0].frame == args[1].frame
-          if isinstance(args[0], point.Point2) and isinstance(args[1], point.Point2):
+          if isinstance(args[0], Point2) and isinstance(args[1], Point2):
               self.p = args[0].copy()
               self.v = args[1] - args[0]
-          elif isinstance(args[0], point.Point2) and isinstance(args[1], vector.Vector2):
+          elif isinstance(args[0], Point2) and isinstance(args[1], Vector2):
               self.p = args[0].copy()
               self.v = args[1].copy()
           else:
-              raise TypeError, '%r %s %s' % (args, type(args[0]), type(args[1]) )
+              raise TypeError('%r %s %s' % (args, type(args[0]), type(args[1]) ))
       elif len(args) == 1:
           if isinstance(args[0], Line2):
               self.p = args[0].p.copy()
               self.v = args[0].v.copy()
           else:
-              raise TypeError, '%r' % (args,)
+              raise TypeError( '%r' % (args,))
       else:
-          raise TypeError, '%r' % (args,)
-
+          raise TypeError( '%r' % (args,))
+        
+      # p and v have a frame, and also self.frame
+      assert self.p.frame == self.v.frame 
+      assert self.frame == self.p.frame
 
 # TODO break this out
 

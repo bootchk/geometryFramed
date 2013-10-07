@@ -4,32 +4,30 @@ Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 Licensed under the LGPLv3
 '''
 
-import line
-import algorithms
-
-from base import isLeftOf
-
+from geometryFramed.line import Line2
+import geometryFramed.algorithms
+from geometryFramed.base import isLeftOf
 
 
-class LineSegment2(line.Line2):
+
+class LineSegment2(Line2):
     '''
     Directed line segment.
     TODO, make swapping NOT change the direction of a line segment??
     '''
   
     def __init__(self, *args):
-        self.constructLinelike(*args)
-        
-        # assert constructLinelike insured all args of same frame
-        self.frame = args[0].frame
-        
-        # It is not an exception to have zero length.
+      self.frame = args[0].frame
+      self.constructLinelike(*args)
+      # assert constructLinelike insured all args of same frame
+
+      # It is not an exception to have zero length.
         
     
     def __repr__(self):
-      ''' !!! repr looses accuracy but reconstructs object. '''
+      ''' !!! repr looses accuracy but reconstructs object, including frame. '''
       points = self.asPointPair()
-      return 'LineSegment2(' + repr(points[0]) + ', ' + repr(points[1]) + ')'
+      return 'LineSegment2(' + repr(points[0]) + ', ' + repr(points[1]) + ', ' + repr(self.frame) + ')'
       
       """
       <%.2f, %.2f> to <%.2f, %.2f>)' % \
@@ -83,7 +81,7 @@ class LineSegment2(line.Line2):
     Use simpler, correct algorithm.
     '''
     def _intersect_line(self, other):
-      return algorithms.intersectLineSegmentLineSegment(other, self)
+      return geometryFramed.algorithms.intersectLineSegmentLineSegment(other, self)
 
 
     '''

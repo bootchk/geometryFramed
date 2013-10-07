@@ -13,10 +13,10 @@ You might need to reload after a fix.
 
 
 
- >>> from point import Point2
- >>> from vector import Vector2
- >>> from ellipse import Ellipse
- >>> from lineSegment import LineSegment2
+ >>> from geometryFramed.point import Point2
+ >>> from geometryFramed.vector import Vector2
+ >>> from geometryFramed.ellipse import Ellipse
+ >>> from geometryFramed.lineSegment import LineSegment2
 
 
 Test objects
@@ -112,13 +112,13 @@ Connect is defined but approximate.
 Point on radial through minor axis connects
 
 >>> pb.connect(anEllipseInA)
-LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A))
+LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A), 'A')
 
 
 Point on ellipse connects
 >>> pc = Point2(3, 2.0, 'A')
 >>> pc.connect(anEllipseInA)
-LineSegment2(Point2(3.00, 2.00, A), Point2(3.00, 2.00, A))
+LineSegment2(Point2(3.00, 2.00, A), Point2(3.00, 2.00, A), 'A')
 
 Line segment connects
 
@@ -141,11 +141,11 @@ Line segment parallel to ellipse connects
 >>> pe = Point2(4, -4, 'A')
 >>> deSegment = LineSegment2(pd, pe)
 >>> anEllipseInA.connect(deSegment)
-LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A))
+LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A), 'A')
 
 ... and vice versa
 >>> deSegment.connect(anEllipseInA)
-LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A))
+LineSegment2(Point2(4.00, 2.00, A), Point2(3.00, 2.00, A), 'A')
 
 
 

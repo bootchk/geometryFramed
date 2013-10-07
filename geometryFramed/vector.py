@@ -5,14 +5,17 @@ Licensed under the LGPLv3
 '''
 
 import math
-import operator
 
-import coordinate
-import point
-from scalar import Dimension
+# Python2
+# from operator import div, floordiv, truediv
+
+from .coordinate import Coordinate2
+from .scalar import Dimension
+# see circular imports at end of this file
 
 
-class Vector2(coordinate.Coordinate2):
+
+class Vector2(Coordinate2):
     '''
     A Vector is a Coordinate
     with math operations.
@@ -31,6 +34,16 @@ class Vector2(coordinate.Coordinate2):
     def __repr__(self):
         return 'Vector2(%.2f, %.2f, %s)' % (self.x, self.y, self.frame)
     
+    def __bool__(self):
+      ''' 
+      Python special method for checking truth value. 
+      A vector is not a null vector if its Coordinate2 is not zero.
+      '''
+      return super().__bool__()
+      
+    
+    __nonzero__ = __bool__  # Python2
+    
     def __neg__(self):
         return Vector2(-self.x,
                         -self.y,
@@ -47,7 +60,7 @@ class Vector2(coordinate.Coordinate2):
             if self.__class__ is other.__class__:
                 _class = Vector2
             else:
-                _class = point.Point2
+                _class = Point2
             return _class(self.x + other.x,
                           self.y + other.y,
                           self.frame)
@@ -79,7 +92,7 @@ class Vector2(coordinate.Coordinate2):
             if self.__class__ is other.__class__:
                 _class = Vector2
             else:
-                _class = point.Point2
+                _class = Point2
             return _class(self.x - other.x,
                           self.y - other.y,
                           self.frame)
@@ -100,7 +113,7 @@ class Vector2(coordinate.Coordinate2):
                            other.y - self[1])
 
     def __mul__(self, other):
-        # assert type(other) in (int, long, float)
+        # assert type(other) in (int,, float)
         assert isinstance(other, Dimension)
         assert self.frame == other.frame, 'Mismatched frames: ' + str(self.frame) + ', ' + str(other.frame)
         return Vector2(self.x * other.value,
@@ -110,53 +123,63 @@ class Vector2(coordinate.Coordinate2):
     __rmul__ = __mul__
 
     def __imul__(self, other):
-        assert type(other) in (int, long, float)
+        assert type(other) in (int, float)
         self.x *= other
         self.y *= other
         return self
 
+    """
+    Python2
     def __div__(self, other):
-        # assert type(other) in (int, long, float)
+        # assert type(other) in (int, float)
         assert isinstance(other, Dimension)
         assert self.frame == other.frame, 'Mismatched frames: ' + str(self.frame) + ', ' + str(other.frame)
-        return Vector2(operator.div(self.x, other.value),
-                       operator.div(self.y, other.value),
+        return Vector2(self.x / other.value,
+                       self.y / other.value,
                        self.frame)
 
 
     def __rdiv__(self, other):
-        assert type(other) in (int, long, float)
-        return Vector2(operator.div(other, self.x),
-                       operator.div(other, self.y))
+        assert type(other) in (int, float)
+        return Vector2(other / self.x,
+                       other / self.y,
+                       self.frame)
+    """
+    
 
     def __floordiv__(self, other):
-        assert type(other) in (int, long, float)
-        return Vector2(operator.floordiv(self.x, other),
-                       operator.floordiv(self.y, other))
+        assert type(other) in (int, float)
+        return Vector2(self.x // other,
+                       self.y // other,
+                       self.frame)
 
 
     def __rfloordiv__(self, other):
-        assert type(other) in (int, long, float)
-        return Vector2(operator.floordiv(other, self.x),
-                       operator.floordiv(other, self.y))
+        assert type(other) in (int, float)
+        return Vector2( other // self.x,
+                        other // self.y,
+                        self.frame)
 
     def __truediv__(self, other):
-        assert type(other) in (int, long, float)
-        return Vector2(operator.truediv(self.x, other),
-                       operator.truediv(self.y, other))
+        assert isinstance(other, Dimension)
+        assert self.frame == other.frame, 'Mismatched frames: ' + str(self.frame) + ', ' + str(other.frame)
+        return Vector2( self.x / other.value,
+                        self.y / other.value,
+                        self.frame)
 
 
     def __rtruediv__(self, other):
-        assert type(other) in (int, long, float)
-        return Vector2(operator.truediv(other, self.x),
-                       operator.truediv(other, self.y))
+        assert type(other) in (int, float)
+        return Vector2( other / self.x,
+                        other / self.y,
+                        self.frame)
     
 
     '''
     Coercion
     '''
     def asPoint2(self):
-      return point.Point2(self.x, self.y, self.frame)
+      return Point2(self.x, self.y, self.frame)
     
     
     '''
@@ -354,3 +377,7 @@ class Vector2(coordinate.Coordinate2):
     def inverse(self):
       # TODOLOW not invertible if zero.
       return Vector2(1.0/self.x, 1.0/self.y, self.frame)
+
+
+# circular
+from geometryFramed.point import Point2

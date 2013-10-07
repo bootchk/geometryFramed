@@ -1,0 +1,54 @@
+
+
+
+To test:
+
+>cd geometry
+>python
+
+import doctest
+doctest.testfile("test/testInheritance.txt")
+
+You might need to reload after a fix.
+
+
+
+ >>> from geometryFramed.vector import Vector2
+ >>> from geometryFramed.coordinate import Coordinate2
+
+ >>> from geometryFramed.point import Point2
+ >>> from geometryFramed.lineSegment import LineSegment2
+ >>> from geometryFramed.circle import Circle
+ >>> from geometryFramed.ellipse import Ellipse
+
+
+Inheritance
+-----------
+
+All classes are new style with simple MRO.
+
+
+Nongeometrical
+--------------
+
+>>> Vector2.__mro__
+(<class 'geometryFramed.vector.Vector2'>, <class 'geometryFramed.coordinate.Coordinate2'>, <class 'object'>)
+
+>>> Coordinate2.__mro__
+(<class 'geometryFramed.coordinate.Coordinate2'>, <class 'object'>)
+
+
+Geometrical
+-----------
+
+>>> Point2.__mro__
+(<class 'geometryFramed.point.Point2'>, <class 'geometryFramed.geometricalABC.Geometrical2D'>, <class 'geometryFramed.geometricalABC.Geometrical'>, <class 'geometryFramed.coordinate.Coordinate2'>, <class 'object'>)
+
+>>> LineSegment2.__mro__
+(<class 'geometryFramed.lineSegment.LineSegment2'>, <class 'geometryFramed.line.Line2'>, <class 'geometryFramed.geometricalABC.Geometrical2D'>, <class 'geometryFramed.geometricalABC.Geometrical'>, <class 'object'>)
+
+>>> Circle.__mro__
+(<class 'geometryFramed.circle.Circle'>, <class 'geometryFramed.geometricalABC.Geometrical2D'>, <class 'geometryFramed.geometricalABC.Geometrical'>, <class 'object'>)
+
+>>> Ellipse.__mro__
+(<class 'geometryFramed.ellipse.Ellipse'>, <class 'geometryFramed.geometricalABC.Geometrical2D'>, <class 'geometryFramed.geometricalABC.Geometrical'>, <class 'object'>)

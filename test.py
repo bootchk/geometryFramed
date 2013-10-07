@@ -9,7 +9,7 @@ if __name__ == "__main__":
     import doctest
     
     " Invoke tests (separate from the modules, and .txt ) of each module in package"
-    print "Running all tests in test directory"
+    print("Running all tests in test directory")
     doctest.testfile('test/testCoordinate.txt')
     doctest.testfile('test/testScalar.txt')
     doctest.testfile('test/testPoint.txt')

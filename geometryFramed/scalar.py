@@ -32,12 +32,12 @@ class Dimension(object):
                      self.frame)
     else:
       # Multiplication by pure number stays in same frame. 
-      assert type(other) in (int, long, float)
+      assert type(other) in (int, float)
       return Dimension(self.value * other,
                      self.frame)
       
       
-  def __div__(self, other):
+  def __truediv__(self, other):
     ''' Division by pure number or other Dimension '''
     if isinstance(other, Dimension):
       # Division of two Dimensions returns a pure number (ratio)
@@ -45,7 +45,7 @@ class Dimension(object):
       return self.value / other.value
     else:
       # Division by pure number stays in same frame. 
-      assert type(other) in (int, long, float)
+      assert type(other) in (int, float)
       return Dimension(self.value / other,
                      self.frame)
     

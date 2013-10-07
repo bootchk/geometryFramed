@@ -13,10 +13,10 @@ You might need to reload after a fix.
 
 
 
- >>> from point import Point2
- >>> from vector import Vector2
- >>> from lineSegment import LineSegment2
- >>> from ellipse import Ellipse
+ >>> from geometryFramed.point import Point2
+ >>> from geometryFramed.vector import Vector2
+ >>> from geometryFramed.lineSegment import LineSegment2
+ >>> from geometryFramed.ellipse import Ellipse
 
 
 
@@ -43,7 +43,7 @@ Point to point geometry
 Geometry is defined for point to point
 
 >>> pa.connect(pb)
-LineSegment2(Point2(1.50, 2.00, A), Point2(1.00, 1.00, A))
+LineSegment2(Point2(1.50, 2.00, A), Point2(1.00, 1.00, A), 'A')
 
 
 Different points do not intersect
@@ -54,7 +54,7 @@ True
 
 Distance  between points yields a scalar Dimension in the same frame
 >>> pa.distance(pb)
-Dimension(1.11803398875, 'A')
+Dimension(1.118033988749895, 'A')
 
 Nearest point is the other point.
 
@@ -90,18 +90,18 @@ Point/LineSegment geometry
 A line segment connects to a point.
 
 >>> abSegment.connect(pc)
-LineSegment2(Point2(1.50, 2.00, A), Point2(4.00, 4.00, A))
+LineSegment2(Point2(1.50, 2.00, A), Point2(4.00, 4.00, A), 'A')
 
 ... and vice versa
 
 >>> pa.connect(abSegment)
-LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A))
+LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A), 'A')
 
 
 A line segment connects to a point on the line segment by a segment.
 
 >>> abSegment.connect(pa)
-LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A))
+LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A), 'A')
 
 ... and the connecting segment has zero magnitude
 
@@ -123,7 +123,7 @@ LineSegment to LineSegment geometry
 --------------------------------
 
 A line segment intersects itself yielding a copy of the line segment itself.
-FIXME
+FIXME currently fails
 
 >>> abSegment.intersect(abSegment) == abSegment
 True

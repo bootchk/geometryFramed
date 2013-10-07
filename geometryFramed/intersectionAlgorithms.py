@@ -16,7 +16,7 @@ Work in progress (not finished for parallel segments)
 Frame safety not enforced: require points in same frame
 '''
 
-from base import isSegmentsIntersect
+from geometryFramed.base import isSegmentsIntersect
 
 
 

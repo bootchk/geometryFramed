@@ -4,10 +4,11 @@ Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 Licensed under the LGPLv3
 '''
 
-from geometricalABC import Geometrical2D
-import point
-from scalar import Dimension
-import algorithms
+from geometryFramed.geometricalABC import Geometrical2D
+from geometryFramed.point import Point2
+from geometryFramed.scalar import Dimension
+
+import geometryFramed.algorithms
 
 
 class Circle(Geometrical2D):
@@ -18,7 +19,7 @@ class Circle(Geometrical2D):
         Circle having radius having center, in same frame as center.
         !!! Note radius is not a Dimension having a frame.
         '''
-        assert isinstance(center, point.Point2) and isinstance(radius, (float, int))
+        assert isinstance(center, Point2) and isinstance(radius, (float, int))
         self.center = center.copy()
         self.radius = float(radius)
         self.frame = center.frame
@@ -74,19 +75,19 @@ class Circle(Geometrical2D):
 
 
     def _intersect_point2(self, other):
-        return algorithms.intersectPoint2Circle(other, self)
+        return geometryFramed.algorithms.intersectPoint2Circle(other, self)
 
     def _intersect_line2(self, other):
-        return algorithms.intersectLine2Circle(other, self)
+        return geometryFramed.algorithms.intersectLine2Circle(other, self)
 
     def _connect_point2(self, other):
-        return algorithms.connectPoint2Circle(other, self)
+        return geometryFramed.algorithms.connectPoint2Circle(other, self)
 
     def _connect_line2(self, other):
-        result = algorithms.connectCircleLine2(self, other)
+        result = geometryFramed.algorithms.connectCircleLine2(self, other)
         if result:
             return result._swap()
 
     def _connect_circle(self, other):
-        return algorithms.connectCircleCircle(other, self)
+        return geometryFramed.algorithms.connectCircleCircle(other, self)
 

@@ -13,11 +13,11 @@ You might need to reload after a fix.
 
 
 
- >>> from point import Point2
- >>> from vector import Vector2
- >>> from ellipse import Ellipse
- >>> from lineSegment import LineSegment2
- >>> from scalar import Dimension
+ >>> from geometryFramed.point import Point2
+ >>> from geometryFramed.vector import Vector2
+ >>> from geometryFramed.ellipse import Ellipse
+ >>> from geometryFramed.lineSegment import LineSegment2
+ >>> from geometryFramed.scalar import Dimension
 
 
 Frameless
@@ -45,7 +45,7 @@ The default frame is 'NoneFrame'
 
 >>> aSegment = LineSegment2(pa, pb)
 >>> aSegment
-LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(3.00, 5.00, NoneFrame))
+LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(3.00, 5.00, NoneFrame), 'NoneFrame')
 
 
 You can create vectors with a default frame.
@@ -87,15 +87,15 @@ Geometrical
 Frameless geometrical objects behave.
 
 >>> pa.connect(pb)
-LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(3.00, 5.00, NoneFrame))
+LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(3.00, 5.00, NoneFrame), 'NoneFrame')
 
 >>> aSegment.connect(pa)
-LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(1.00, 1.00, NoneFrame))
+LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(1.00, 1.00, NoneFrame), 'NoneFrame')
 
 >>> aSegment.intersect(pb)
 Point2(3.00, 5.00, NoneFrame)
 
 >>> aSegment.length
-Dimension(4.472135955, 'NoneFrame')
+Dimension(4.47213595499958, 'NoneFrame')
 
 

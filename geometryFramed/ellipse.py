@@ -6,11 +6,11 @@ Licensed under the LGPLv3
 
 import math
 
-from geometricalABC import Geometrical2D
-import point
-import vector
-from circle import Circle
-from scalar import Dimension
+from geometryFramed.geometricalABC import Geometrical2D
+from geometryFramed.point import Point2
+from geometryFramed.vector import Vector2
+from geometryFramed.circle import Circle
+from geometryFramed.scalar import Dimension
 
 
 
@@ -27,7 +27,7 @@ class Ellipse(Geometrical2D):
 
     def __init__(self, center, radiusX, radiusY):
        
-        assert isinstance(center, point.Point2) and isinstance(radiusX, (float, int)) and isinstance(radiusY, (float, int))
+        assert isinstance(center, Point2) and isinstance(radiusX, (float, int)) and isinstance(radiusY, (float, int))
         self.center = center.copy()
         self.radiusX = float(radiusX)
         self.radiusY=float(radiusY)
@@ -66,8 +66,8 @@ class Ellipse(Geometrical2D):
       #print "other", other
       
       # assert center
-      translationVector = vector.Vector2(-self.center.x, -self.center.y, "TEMP")
-      inverseTranslationVector = vector.Vector2(self.center.x, self.center.y, self.frame)
+      translationVector = Vector2(-self.center.x, -self.center.y, "TEMP")
+      inverseTranslationVector = Vector2(self.center.x, self.center.y, self.frame)
       scaleVector = self.getScaleVectorToCircle()
       inverseScaleVector = scaleVector.inverse()
       #print "Scalevector", scaleVector
@@ -135,7 +135,7 @@ class Ellipse(Geometrical2D):
       " Circle enclosed by minorRadius centered at origin of TEMP frame. "
       # No need to translate, just set at 0,0
       # No need to scale, just use min
-      return Circle(point.Point2(0,0, "TEMP"), min(self.radiusX, self.radiusY))
+      return Circle(Point2(0,0, "TEMP"), min(self.radiusX, self.radiusY))
       # ensure center is near 0,0
 
 
@@ -143,15 +143,15 @@ class Ellipse(Geometrical2D):
       " Vector that unstretches ellipse to circle. "
       if self.radiusX <= self.radiusY:
         scale = self.radiusX / self.radiusY
-        result = vector.Vector2(1, scale, "TEMP")
+        result = Vector2(1, scale, "TEMP")
       else:
         scale = self.radiusY / self.radiusX
-        result = vector.Vector2(scale, 1, "TEMP")
+        result = Vector2(scale, 1, "TEMP")
       assert scale <= 1
       return result
       """
       else:
-        result = vector.Vector2(1, self.radiusY / self.radiusX, "TEMP")
+        result = Vector2(1, self.radiusY / self.radiusX, "TEMP")
       """
 
     def tangent(self, point):
@@ -171,10 +171,10 @@ class Ellipse(Geometrical2D):
       if vectorFromCenterToPoint.y == 0:
         # Avoid division by zero
         # point is on X axis, tangent is Y axis
-        result = vector.Vector2(0, 1, self.frame)
+        result = Vector2(0, 1, self.frame)
       else:
         slopeOfTangent = - ( b**2 * vectorFromCenterToPoint.x) / (a**2 * vectorFromCenterToPoint.y)
-        result = vector.Vector2(1, slopeOfTangent, self.frame)
+        result = Vector2(1, slopeOfTangent, self.frame)
       return result
     
     
@@ -206,8 +206,8 @@ class Ellipse(Geometrical2D):
       denominator = math.sqrt((self.minorRadius() * math.cos(angleToXAxis))**2 + (self.majorRadius() * math.sin(angleToXAxis))**2)
       x = self.majorRadius() * math.sin(angleToXAxis) / denominator
       y = self.minorRadius() * math.cos(angleToXAxis) / denominator
-      return vector.Vector2(x, y, self.frame)  - vector.Vector2(point.x, point.y, self.frame)
-      # - vector.Vector2(self.center.x, self.center.y, self.frame)
+      return Vector2(x, y, self.frame)  - Vector2(point.x, point.y, self.frame)
+      # - Vector2(self.center.x, self.center.y, self.frame)
     
     
     def minorRadius(self):
@@ -225,7 +225,7 @@ class Ellipse(Geometrical2D):
     TODO move to an ABC for all closed geometrical objects.
     '''
     def isEnclosed(self, other):
-      assert isinstance(other, point.Point2)
+      assert isinstance(other, Point2)
       
       # algorithms.isEnclosedPoint2Circle(P, C)
       # Work in progress

@@ -13,8 +13,8 @@ You might need to reload after a fix.
 
 
 
- >>> from coordinate import Coordinate2
- >>> from point import Point2
+ >>> from geometryFramed.coordinate import Coordinate2
+ >>> from geometryFramed.point import Point2
 
 
 

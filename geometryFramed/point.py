@@ -3,13 +3,12 @@ Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 
 Licensed under the LGPLv3
 '''
-import coordinate
-from geometricalABC import Geometrical2D
-import vector
-import algorithms
+from geometryFramed.coordinate import Coordinate2
+from geometryFramed.geometricalABC import Geometrical2D
+# see circular imports at end of this file
 
 
-class Point2(Geometrical2D, coordinate.Coordinate2):
+class Point2(Geometrical2D, Coordinate2):
     '''
     A Point is a Coordinate 
     supplemented with math operations
@@ -25,7 +24,7 @@ class Point2(Geometrical2D, coordinate.Coordinate2):
     
     
     def asVector2(self):
-      return vector.Vector2(self.x, self.y, self.frame)
+      return Vector2(self.x, self.y, self.frame)
     
 
     '''
@@ -38,9 +37,9 @@ class Point2(Geometrical2D, coordinate.Coordinate2):
         We implement Point.__add__ so that P + V does not resolve to V.__radd__ yielding Vector.
         '''
         if isinstance(other, Point2):
-            raise NotImplementedError, 'Point addition is not defined and meaningless.'
+            raise NotImplementedError('Point addition is not defined and meaningless.')
         assert self.frame == other.frame, 'Mismatched frames: ' + str(self.frame) + ', ' + str(other.frame)
-        assert isinstance(other, vector.Vector2)
+        assert isinstance(other, Vector2)
         return Point2(self.x + other.x,
                       self.y + other.y,
                       self.frame)
@@ -48,13 +47,13 @@ class Point2(Geometrical2D, coordinate.Coordinate2):
     
     def __sub__(self, other):
         assert self.frame == other.frame, 'Mismatched frames: ' + str(self.frame) + ', ' + str(other.frame)
-        if isinstance(other, vector.Vector2):
+        if isinstance(other, Vector2):
             # Point - Vector -> Point
             _class = Point2
         else:
             # See below, duck type everything else as a Point2
             # Point - Point -> Vector
-            _class = vector.Vector2
+            _class = Vector2
       
         assert hasattr(other, '__len__') and len(other) >= 2
         return _class(self.x - other[0],
@@ -82,23 +81,23 @@ class Point2(Geometrical2D, coordinate.Coordinate2):
     '''
     def _connect_point2(self, other):
       # Why is this reverse order: other, self ?
-      return algorithms.connectPoint2Point2(other, self)
+      return geometryFramed.algorithms.connectPoint2Point2(other, self)
     
     def _connect_line2(self, other):
-        return algorithms.connectPoint2Line2(self, other)._swap()
+        return geometryFramed.algorithms.connectPoint2Line2(self, other)._swap()
 
     def _connect_circle(self, other):
-        return algorithms.connectPoint2Circle(self, other)._swap()
+        return geometryFramed.algorithms.connectPoint2Circle(self, other)._swap()
     
     
     def _intersect_point2(self, other):
-        return algorithms.intersectPoint2Point2(self, other)
+        return geometryFramed.algorithms.intersectPoint2Point2(self, other)
       
     def _intersect_line2(self, other):
-        return algorithms.intersectPoint2Line2(self, other)
+        return geometryFramed.algorithms.intersectPoint2Line2(self, other)
       
     def _intersect_circle(self, other):
-        return algorithms.intersectPoint2Circle(self, other)
+        return geometryFramed.algorithms.intersectPoint2Circle(self, other)
     
     
   
@@ -143,3 +142,6 @@ class Point2(Geometrical2D, coordinate.Coordinate2):
       else:
         result = Point2(self.x * vector.x, self.y, vector.frame)
       return result
+    
+from geometryFramed.vector import Vector2
+import geometryFramed.algorithms

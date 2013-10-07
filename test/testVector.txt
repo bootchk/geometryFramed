@@ -12,8 +12,9 @@ doctest.testfile("test/testVector.txt")
 You might need to reload after a fix.
 
 
->>> from vector import Vector2
->>> from point import Point2
+>>> from geometryFramed.vector import Vector2
+>>> from geometryFramed.point import Point2
+>>> from geometryFramed.scalar import Dimension
 
 
 Vector
@@ -146,7 +147,14 @@ AssertionError
 
 The zero vector as a boolean value returns False.
 
->>> if not zeroVector: print True
+>>> bool(zeroVector)
+False
+
+>>> if not zeroVector: True
+True
+
+A nonzero vector as a boolean value is True
+>>> bool(va)
 True
 
 
@@ -309,10 +317,43 @@ AssertionError: Mismatched frames: A, B
 
 
 
+Vector and vector math
+======================
 
 Vector addition yields vector
 
-TODO
+>>> va + va
+Vector2(3.00, 4.00, A)
+
+Vector subtraction yields a vector
+
+>>> va - va
+Vector2(0.00, 0.00, A)
+
+Vector subtracted from itself is the null vector
+
+>>> va - va == zeroVector
+True
+
+
+Vector and scalar math
+======================
+
+>>> two = Dimension(2, 'A')
+
+Vector divided by a scalar
+
+>>> va / two
+Vector2(0.75, 1.00, A)
+
+Vector added to itself is the same as multiplication by a scalar
+
+>>> va + va == va * two
+True
+
+
+
+
 
 
 

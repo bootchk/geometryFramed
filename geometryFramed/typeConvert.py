@@ -11,11 +11,11 @@ Note below the name of the parameter is name of a type (but lower case.)
 This somewhat knows the internals of the types, e.g. a point is 2D location with x and y.
 '''
 
-from PyQt4.QtCore import QPointF, QPoint, QEvent
-from point import Point2
-from vector import Vector2
-from lineSegment import LineSegment2
-from scalar import Dimension
+from PyQt5.QtCore import QPointF, QPoint, QEvent
+from .point import Point2
+from .vector import Vector2
+from .lineSegment import LineSegment2
+from .scalar import Dimension
 
 
 

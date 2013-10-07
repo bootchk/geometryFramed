@@ -13,7 +13,7 @@ You might need to reload after a fix.
 
 
 
- >>> from scalar import Dimension
+ >>> from geometryFramed.scalar import Dimension
 
 
 
@@ -38,14 +38,14 @@ Scalars cannot be compared to ints.
 >>> sa == 1
 Traceback (most recent call last):
 ...
-AssertionError: <type 'int'>
+AssertionError: <class 'int'>
 
 
 Scalars cannot be compared to floats.
 >>> sb == 1.0
 Traceback (most recent call last):
 ...
-AssertionError: <type 'float'>
+AssertionError: <class 'float'>
 
 
 Scalars compare, with the usual cautions about comparing floats to ints

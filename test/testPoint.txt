@@ -13,9 +13,10 @@ You might need to reload after a fix.
 
 
 
- >>> from point import Point2
- >>> from vector import Vector2
- >>> from ellipse import Ellipse
+ >>> from geometryFramed.point import Point2
+ >>> from geometryFramed.vector import Vector2
+ >>> from geometryFramed.ellipse import Ellipse
+ >>> from geometryFramed.base import isBetween
 
 
 
@@ -87,7 +88,7 @@ Geometry
 Points connect to themselves.
 
 >>> pa.connect(pa)
-LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A))
+LineSegment2(Point2(1.50, 2.00, A), Point2(1.50, 2.00, A), 'A')
 
 
 The distance from a point to itself is a Dimension with value 0.
@@ -118,7 +119,7 @@ True
 Truthiness of point c intersection with LineSegment defined by points a, b 
 is determined by the isBetween function
 
->>> from base import isBetween
+
 >>> isBetween( pa, pb, pa)
 True
 >>> isBetween( pa, pb, pb)

@@ -10,15 +10,7 @@ Licensed under the LGPLv3
 '''
 import math
 
-import point
-import line
-import lineSegment
-from scalar import Dimension
-from intersectionAlgorithms import intersectLineSegmentsForPoints
-
-
-
-
+# see circular imports at end of this file
 
 
 '''
@@ -35,7 +27,7 @@ def intersectPoint2Point2(A, B):
     result = A.copy()
   else:
     result = None
-  assert isinstance(result, point.Point2) or result is None
+  assert isinstance(result, Point2) or result is None
   return result
     
     
@@ -50,7 +42,7 @@ def intersectPoint2Line2(A, B):
     result = A
   else:
     result = None
-  assert isinstance(result, point.Point2) or result is None
+  assert isinstance(result, Point2) or result is None
   return result
 
 def intersectPoint2Circle(A, B):
@@ -87,7 +79,7 @@ def intersectLine2Line2(A, B):
     if not B._u_in(ub):
         return None
 
-    return point.Point2(A.p.x + ua * A.v.x,
+    return Point2(A.p.x + ua * A.v.x,
                   A.p.y + ua * A.v.y,
                   A.p.frame)
 
@@ -114,12 +106,12 @@ def intersectLine2Circle(L, C):
 
     # Tangent
     if u1 == u2:
-        return point.Point2(L.p.x + u1 * L.v.x,
+        return Point2(L.p.x + u1 * L.v.x,
                       L.p.y + u1 * L.v.y)
 
-    return lineSegment.LineSegment2(point.Point2(L.p.x + u1 * L.v.x,
+    return LineSegment2(Point2(L.p.x + u1 * L.v.x,
                                L.p.y + u1 * L.v.y),
-                        point.Point2(L.p.x + u2 * L.v.x,
+                        Point2(L.p.x + u2 * L.v.x,
                                L.p.y + u2 * L.v.y))
 
 
@@ -147,7 +139,7 @@ def intersectLineSegmentLineSegment(segment1, segment2):
   if xyTuple is None:
     return None
   else:
-    return point.Point2(xyTuple[0], xyTuple[1], segment1.frame)
+    return Point2(xyTuple[0], xyTuple[1], segment1.frame)
 
 
 
@@ -161,7 +153,7 @@ def connectPoint2Point2(a, b):
   Connecting line segment from a point to other point.
   By definition, a line segment connects two points.
   '''
-  return lineSegment.LineSegment2(a, b)
+  return LineSegment2(a, b)
   
   
 def connectPoint2Line2(P, L):
@@ -177,7 +169,7 @@ def connectPoint2Line2(P, L):
     Any point of L is closest to P.
     '''
     if d <= 0:
-      return lineSegment.LineSegment2(P, L.p)
+      return LineSegment2(P, L.p)
     
     assert d != 0, 'Divisor is not zero.'
     u = ((P.x - L.p.x) * L.v.x + \
@@ -186,20 +178,20 @@ def connectPoint2Line2(P, L):
     if not L._u_in(u):
         u = max(min(u, 1.0), 0.0)
     
-    return lineSegment.LineSegment2(P,
-                            point.Point2(L.p.x + u * L.v.x,
+    return LineSegment2(P,
+                            Point2(L.p.x + u * L.v.x,
                                    L.p.y + u * L.v.y,
                                    P.frame))
     
 
 def connectPoint2Circle(P, C):
-    assert isinstance(P, point.Point2)
+    assert isinstance(P, Point2)
     assert P.frame == C.frame
     
     v = P - C.center
     normalV = v.normal()
     radialV = normalV * C.radiusDimension()
-    return lineSegment.LineSegment2(P, point.Point2(C.center.x + radialV.x, C.center.y + radialV.y, P.frame))
+    return LineSegment2(P, Point2(C.center.x + radialV.x, C.center.y + radialV.y, P.frame))
   
 
 def connectLine2Line2(A, B):
@@ -207,7 +199,8 @@ def connectLine2Line2(A, B):
     d = B.v.y * A.v.x - B.v.x * A.v.y
     if d == 0:
         # Parallel, connect an endpoint with a line
-        if isinstance(B, line.Ray2) or isinstance(B, lineSegment.LineSegment2):
+        # TODO isinstance(B, line.Ray2) or 
+        if isinstance(B, LineSegment2):
             p1, p2 = connectPoint2Line2(B.p, A)
             return p2, p1
         # No endpoint (or endpoint is on A), possibly choose arbitrary point
@@ -223,8 +216,8 @@ def connectLine2Line2(A, B):
     if not B._u_in(ub):
         ub = max(min(ub, 1.0), 0.0)
 
-    return lineSegment.LineSegment2(point.Point2(A.p.x + ua * A.v.x, A.p.y + ua * A.v.y),
-                        point.Point2(B.p.x + ub * B.v.x, B.p.y + ub * B.v.y))
+    return LineSegment2(Point2(A.p.x + ua * A.v.x, A.p.y + ua * A.v.y),
+                        Point2(B.p.x + ub * B.v.x, B.p.y + ub * B.v.y))
 
 def connectCircleLine2(C, L):
     assert C.frame == L.frame
@@ -233,10 +226,10 @@ def connectCircleLine2(C, L):
     u = ((C.center.x - L.p.x) * L.v.x + (C.center.y - L.p.y) * L.v.y) / d
     if not L._u_in(u):
         u = max(min(u, 1.0), 0.0)
-    aPoint = point.Point2(L.p.x + u * L.v.x, L.p.y + u * L.v.y, C.frame)
+    aPoint = Point2(L.p.x + u * L.v.x, L.p.y + u * L.v.y, C.frame)
     v = (aPoint - C.center)
     vScaled = v.normal() * C.radiusDimension()
-    return lineSegment.LineSegment2(point.Point2(C.center.x + vScaled.x, C.center.y + vScaled.y, C.frame),
+    return LineSegment2(Point2(C.center.x + vScaled.x, C.center.y + vScaled.y, C.frame),
                                      aPoint)
 
 
@@ -253,8 +246,8 @@ def connectCircleCircle(A, B):
     elif d >= A.radius and d >= B.radius:
         s1,s2 = +1, -1
     v.normalize()
-    return lineSegment.LineSegment2(point.Point2(A.center.x + s1 * v.x * A.radius, A.center.y + s1 * v.y * A.radius),
-                        point.Point2(B.center.x + s2 * v.x * B.radius, B.center.y + s2 * v.y * B.radius))
+    return LineSegment2(Point2(A.center.x + s1 * v.x * A.radius, A.center.y + s1 * v.y * A.radius),
+                        Point2(B.center.x + s2 * v.x * B.radius, B.center.y + s2 * v.y * B.radius))
 
 
 
@@ -274,3 +267,8 @@ def isEnclosedPoint2Circle(P, C):
   '''
   return abs(P - C.center) <= C.radius
 
+
+from geometryFramed.point import Point2
+from geometryFramed.lineSegment import LineSegment2
+from geometryFramed.scalar import Dimension
+from geometryFramed.intersectionAlgorithms import intersectLineSegmentsForPoints

@@ -4,7 +4,7 @@ Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 Licensed under the LGPLv3
 '''
 
-from scalar import Dimension
+from .scalar import Dimension
 
 
 class Coordinate2(object):
@@ -53,7 +53,7 @@ class Coordinate2(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.x != 0 or self.y != 0
 
     def __len__(self):
