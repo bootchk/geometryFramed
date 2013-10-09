@@ -20,6 +20,9 @@ You might need to reload after a fix.
 Scalar
 ------
 
+Frames
+======
+
 Scalars have a frame
 
 >>> sa = Dimension(1, "A")
@@ -48,11 +51,6 @@ Traceback (most recent call last):
 AssertionError: <class 'float'>
 
 
-Scalars compare, with the usual cautions about comparing floats to ints
->>> sa == sb
-True
-
-
 Comparing scalars in different frames raises an exception
 >>> sc = Dimension(1.0, "C")
 >>> sa == sc
@@ -60,3 +58,29 @@ Traceback (most recent call last):
 ...
 AssertionError: Frames differ
 
+Comparisons
+===========
+
+Scalars compare for equality, with the usual cautions about comparing floats to ints
+>>> sa == sb
+True
+
+Scalars order
+>>> sd = Dimension(2.0, "A")
+>>> sa < sd
+True
+
+Floating point positive and negative zero equality
+>>> sZero = Dimension(0.0, "A")
+>>> sNegZero = Dimension(-0.0, "A")
+>>> sZero == sNegZero
+True
+
+Tiny numbers are not equal to zero
+>>> sTiny = Dimension(0.00000000000000000001, "A")
+>>> sTiny == sZero
+False
+
+Tiny numbers are near(zero) within epsilon defined in framedGeometry
+>>> sTiny.near(sZero)
+True

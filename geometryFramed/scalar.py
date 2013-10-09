@@ -54,20 +54,50 @@ class Dimension(object):
     return Dimension(-self.value,
                      self.frame)
     
+  '''
+  Rich comparisons
+  '''
   
-  def __eq__(self, other):
-    ''' Unsafe for floats. '''
+  def checkFrames(self, other):
     assert isinstance(other, Dimension), str(type(other))
     assert self.frame == other.frame, 'Frames differ'
+    pass
+    
+  def __eq__(self, other):
+    ''' Unsafe for floats. '''
+    self.checkFrames(other)
     return self.value == other.value
+
+  def __ne__(self, other):
+    ''' Unsafe for floats. '''
+    self.checkFrames(other)
+    return self.value != other.value
   
-  # TODOLOW other comparison
+  def __lt__(self, other):
+    self.checkFrames(other)
+    return self.value < other.value
+  
+  def __gt__(self, other):
+    self.checkFrames(other)
+    return self.value > other.value
+  
+  def __le__(self, other):
+    self.checkFrames(other)
+    return self.value <= other.value
+  
+  def __ge__(self, other):
+    self.checkFrames(other)
+    return self.value >= other.value
+    
     
   def near(self, other):
+    ''' Floating point safe check for equality '''
     assert self.frame == other.frame
     return abs(self.value - other.value) < 0.000000000001
   
   
+  """
+  Python2
   def __cmp__(self, other):
     ''' 
     Frame safe, rich comparison between dimensions.
@@ -82,7 +112,8 @@ class Dimension(object):
       return 0
     else:
       return 1
-    
+  """
+  
     
   def __abs__(self):
     ''' abs of Dimension is positive Dimension. '''
