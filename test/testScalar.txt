@@ -41,14 +41,14 @@ Scalars cannot be compared to ints.
 >>> sa == 1
 Traceback (most recent call last):
 ...
-AssertionError: <class 'int'>
+TypeError: Can't compare Dimension to other types.
 
 
 Scalars cannot be compared to floats.
 >>> sb == 1.0
 Traceback (most recent call last):
 ...
-AssertionError: <class 'float'>
+TypeError: Can't compare Dimension to other types.
 
 
 Comparing scalars in different frames raises an exception

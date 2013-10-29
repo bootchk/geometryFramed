@@ -27,6 +27,7 @@ Inheritance
 
 All classes are new style with simple MRO.
 
+!!! This is for Python3 and fails Python2.7
 
 Nongeometrical
 --------------

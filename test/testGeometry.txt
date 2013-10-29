@@ -17,6 +17,7 @@ You might need to reload after a fix.
  >>> from geometryFramed.vector import Vector2
  >>> from geometryFramed.lineSegment import LineSegment2
  >>> from geometryFramed.ellipse import Ellipse
+ >>> from geometryFramed.scalar import Dimension
 
 
 
@@ -53,8 +54,13 @@ True
 
 
 Distance  between points yields a scalar Dimension in the same frame
->>> pa.distance(pb)
-Dimension(1.118033988749895, 'A')
+>>> result = pa.distance(pb)
+>>> isinstance(result, Dimension)
+True
+>>> print(round(result.value, 8))
+1.11803399
+>>> result.frame == 'A'
+True
 
 Nearest point is the other point.
 

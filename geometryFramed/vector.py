@@ -3,8 +3,13 @@ Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 
 Licensed under the LGPLv3
 '''
+# This must be at beginning and provides Python3 division semantics for the '/' operator
+# See also below, where we define __div__ equal to __truediv__ for certain classes.
+from __future__ import division
 
 import math
+
+
 
 # Python2
 # from operator import div, floordiv, truediv
@@ -39,7 +44,8 @@ class Vector2(Coordinate2):
       Python special method for checking truth value. 
       A vector is not a null vector if its Coordinate2 is not zero.
       '''
-      return super().__bool__()
+      # Note Python2 syntax for super() is compatible with Python3 but not vice versa: can't use super() here.
+      return super(Vector2, self).__bool__()
       
     
     __nonzero__ = __bool__  # Python2
@@ -128,9 +134,12 @@ class Vector2(Coordinate2):
         self.y *= other
         return self
 
+    
+    
     """
-    Python2
+    Python2: 
     def __div__(self, other):
+      
         # assert type(other) in (int, float)
         assert isinstance(other, Dimension)
         assert self.frame == other.frame, 'Mismatched frames: ' + str(self.frame) + ', ' + str(other.frame)
@@ -145,7 +154,6 @@ class Vector2(Coordinate2):
                        other / self.y,
                        self.frame)
     """
-    
 
     def __floordiv__(self, other):
         assert type(other) in (int, float)
@@ -173,6 +181,12 @@ class Vector2(Coordinate2):
         return Vector2( other / self.x,
                         other / self.y,
                         self.frame)
+    """
+    Note above: from __future__ import division.
+    These aliases support Python2, which only expects __div__  to implement the '/' operator (and not __truediv__)
+    """
+    __div__ = __truediv__
+    __rdiv__ = __rtruediv__
     
 
     '''

@@ -59,7 +59,8 @@ class Dimension(object):
   '''
   
   def checkFrames(self, other):
-    assert isinstance(other, Dimension), str(type(other))
+    if not isinstance(other, Dimension):
+      raise TypeError("Can't compare Dimension to other types.")
     assert self.frame == other.frame, 'Frames differ'
     pass
     

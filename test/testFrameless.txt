@@ -95,7 +95,14 @@ LineSegment2(Point2(1.00, 1.00, NoneFrame), Point2(1.00, 1.00, NoneFrame), 'None
 >>> aSegment.intersect(pb)
 Point2(3.00, 5.00, NoneFrame)
 
->>> aSegment.length
-Dimension(4.47213595499958, 'NoneFrame')
+A Dimension of a frameless object is also frameless.
+>>> result = aSegment.length
+>>> isinstance(result, Dimension)
+True
+>>> print(round(result.value,8))
+4.47213595
+>>> print(result.frame)
+NoneFrame
+
 
 

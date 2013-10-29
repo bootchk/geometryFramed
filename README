@@ -57,7 +57,21 @@ Based on algorithms documented by:
 Requirements
 ------------
 
-Tested only with Python 2.7
+Requires no other modules not distributed with Python.
+
+Early versions tested only with Python 2.7.
+Currently tested with Python2.7+ and Python3.3.
+Google for "Porting to Python 3 Redux": not very useful to support 2.5, 3.0, 3.1, and 3.2.
+
+
+Python 2 to 3
+--------------
+
+Uses: from __future__ import division to get Python3 division semantics.
+Uses: Python2 super(class, instance) syntax which is compatible with Python3.
+Uses: print() which is compatible with Python2
+
+testInheritance.txt is only for Python3
 
 
 Modifications to PyEuclid
