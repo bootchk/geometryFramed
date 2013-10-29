@@ -3,6 +3,10 @@ Copyright 2013 Lloyd K. Konneker, 2006 Alex Holkner
 
 Licensed under the LGPLv3
 '''
+# This must be at beginning and provides Python3 division semantics for the '/' operator
+# See also below, where we define __div__ equal to __truediv__ for certain classes.
+from __future__ import division
+
 
 class Dimension(object):
   '''
@@ -27,7 +31,7 @@ class Dimension(object):
     ''' Multiplication by pure number or other Dimension '''
     if isinstance(other, Dimension):
       # Multiplication of two Dimensions returns a Dimension (not a pure number?)
-      assert self.frame == other.frame
+      assert self.frame == other.frame, 'Frames differ'
       return Dimension(self.value * other.value,
                      self.frame)
     else:
@@ -41,14 +45,15 @@ class Dimension(object):
     ''' Division by pure number or other Dimension '''
     if isinstance(other, Dimension):
       # Division of two Dimensions returns a pure number (ratio)
-      assert self.frame == other.frame
+      assert self.frame == other.frame, 'Frames differ'
       return self.value / other.value
     else:
       # Division by pure number stays in same frame. 
       assert type(other) in (int, float)
       return Dimension(self.value / other,
                      self.frame)
-    
+      
+  __div__ = __truediv__
     
   def __neg__(self):
     return Dimension(-self.value,

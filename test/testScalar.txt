@@ -84,3 +84,37 @@ False
 Tiny numbers are near(zero) within epsilon defined in framedGeometry
 >>> sTiny.near(sZero)
 True
+
+
+Math
+====
+
+Dimensions in the same frame divide, yielding a dimensionless ratio!
+>>> sa / sb
+1.0
+
+Dimensions in the same frame multiply, yielding a Dimension!
+>>> sa * sb
+Dimension(1.0, 'A')
+
+
+Dimensions in different frames do not divide.
+>>> sa / sc
+Traceback (most recent call last):
+...
+AssertionError: Frames differ
+
+Dimensions in different frames do not multiply.
+>>> sa * sc
+Traceback (most recent call last):
+...
+AssertionError: Frames differ
+
+
+Dimension divide by undimensioned, pure numbers, yielding a Dimension.
+>>> sa / 2
+Dimension(0.5, 'A')
+
+Dimension multiply by undimensioned, pure numbers, yielding a Dimension.
+>>> sa * 2
+Dimension(2, 'A')
