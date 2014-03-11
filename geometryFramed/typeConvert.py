@@ -4,21 +4,25 @@ Copyright 2013 Lloyd K. Konneker
 Licensed under the LGPLv3
 
 
-Type conversions from our types to Qt types.
+Type conversions to/from our types to Qt types.
 
 Note below the name of the parameter is name of a type (but lower case.)
 
 This somewhat knows the internals of the types, e.g. a point is 2D location with x and y.
 '''
 
-from PyQt5.QtCore import QPointF, QPoint, QEvent
+from PyQt5.QtCore import QPointF, QPoint, QEvent, QSize, QSizeF
 from .point import Point2
 from .vector import Vector2
 from .lineSegment import LineSegment2
 from .scalar import Dimension
 
 
+'''
+From Qt types to geometryFramed types.
 
+Each method takes a CS parameter, to put result in a frame.
+'''
 def asPoint2(qpoint, coordinateSystem):
   '''
   Not just that is has attributes x and y,
@@ -29,28 +33,48 @@ def asPoint2(qpoint, coordinateSystem):
   return Point2(qpoint.x(), qpoint.y(), coordinateSystem)
 
 def asVector2(qpoint, coordinateSystem):
+  '''
+  Convert Qt types which can be interpreted as vector.
+  Duck type: having x() and y() methods.
+  '''
   assert isinstance(qpoint, QPointF) or isinstance(qpoint, QPoint) or isinstance(qpoint, QEvent)
   return Vector2(qpoint.x(), qpoint.y(), coordinateSystem)
 
+def qsizeAsVector(qsize, coordinateSystem):
+  '''
+  Convert Qt types QSizeF or QSize, which can be interpreted as vector.
+  Duck type: having width() and height() methods.
+  '''
+  assert isinstance(qsize, (QSize, QSizeF))
+  return Vector2(qsize.width(), qsize.height(), coordinateSystem)
+
+
+'''
+From geometryFramed types to Qt types.
+
+Strip frame (coordinateSystem).
+'''
   
-def asQPointF(point2):
+def asQPointF(type2):
   # TODOLOW not confuse points with vectors
   # There should be Vector2.endPoint() and this should not allow Vector2 parameter
-  assert isinstance(point2, Point2) or isinstance(point2, Vector2)
-  # Note pyeuclid has properties, not methods x(), y()
-  return QPointF(point2.x, point2.y)
+  assert isinstance(type2, (Point2, Vector2))
+  # Note geometryFramed has properties, not methods x(), y()
+  return QPointF(type2.x, type2.y)
 
-def asQPoint(point2):
+def asQPoint(type2):
   '''
-  Strip Point2 or Vector2 of CS.
+  Returns integer valued QPoint. Possible loss of precision.
+  '''
+  assert isinstance(type2, (Point2, Vector2))
+  # Note geometryFramed has properties, not methods x(), y()
+  return QPoint(type2.x, type2.y)
+
+
+def asQSizeF(type2):
+  assert isinstance(type2, (Point2, Vector2))
+  return QSizeF(type2.x, type2.y)
   
-  Possible loss of precision.
-  '''
-  assert isinstance(point2, Point2) or isinstance(point2, Vector2)
-  # Note pyeuclid has properties, not methods x(), y()
-  return QPoint(point2.x, point2.y)
-
-
 
 
 '''

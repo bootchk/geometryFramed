@@ -18,7 +18,7 @@ Most users should not call these algorithms directly.
 They are usually used by object oriented methods at a higher level.
 
 
->>> from pyeuclid import Point2
+>>> from geometryFramed import Point2
 >>> a = Point2(0, 0, 'foo')
 >>> b = Point2(0, 1, 'foo')
 >>> c = Point2(0.1, 1, 'foo')
@@ -39,7 +39,7 @@ def area2(a, b, c):
   Usually only the sign is used.
   
   >>> from base import *
-  >>> from pyeuclid import Point2
+  >>> from geometryFramed import Point2
   >>> a = Point2(0,0, 'foo')
   >>> b = Point2(0,1, 'foo')
   >>> c = Point2(2,2, 'foo')

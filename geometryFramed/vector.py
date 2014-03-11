@@ -235,6 +235,15 @@ class Vector2(Coordinate2):
       return Vector2(abs(self.x), abs(self.y), self.frame)
     
     
+    def positiveComponent(self):
+      '''
+      Copy of self having positive or zero components equal to max of zero and original component.
+      I.E. if vector is in positive quadrant, return it,
+      else return 'projection' into positive quadrant.
+      '''
+      return Vector2(max(0, self.x), max(0, self.y), self.frame)
+
+      
       
     '''
     Normal is another vector in same direction but magnitude 1.
